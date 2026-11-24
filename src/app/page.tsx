@@ -1,839 +1,544 @@
 
 "use client";
 
-import React, { useState } from "react";
+import Link from "next/link";
 
 const modules = [
   {
-    id: "write",
     number: "01",
     title: "SMART WRITE",
     subtitle: "Грамотность и работа с текстом",
-    color: "#c9d8b6",
+    description: "Работа со словами, текстами, орфографией и точностью выражений.",
+    symbol: "Aa",
+    href: "/modules",
   },
   {
-    id: "think",
     number: "02",
     title: "SMART THINK",
-    subtitle: "Логика и развитие мышления",
-    color: "#c5d2d9",
+    subtitle: "Логика и мышление",
+    description: "Закономерности, задачи, анализ и поиск нестандартных решений.",
+    symbol: "∴",
+    href: "/modules",
   },
   {
-    id: "check",
     number: "03",
     title: "SMART CHECK",
-    subtitle: "Критическое мышление и анализ",
-    color: "#d8c6a5",
+    subtitle: "Критическое мышление",
+    description: "Проверка фактов, анализ информации и распознавание ошибок.",
+    symbol: "⌕",
+    href: "/modules",
   },
 ];
 
-export default function HomePage() {
-  const [mode, setMode] = useState("write");
-  const [grade, setGrade] = useState("11");
-  const [input, setInput] = useState("");
-  const [output, setOutput] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [workspace, setWorkspace] = useState(false);
+const games = [
+  { name: "WORD MASTER", description: "Слова и грамотность", price: 100, symbol: "Aa" },
+  { name: "PATTERN", description: "Закономерности и логика", price: 80, symbol: "◇" },
+  { name: "FOCUS", description: "Внимание и концентрация", price: 80, symbol: "◎" },
+  { name: "MEMORY GRID", description: "Память и последовательности", price: 120, symbol: "▦" },
+  { name: "TRUE OR FALSE", description: "Факты и критическое мышление", price: 100, symbol: "?" },
+  { name: "STORY BUILDER", description: "Последовательность событий", price: 120, symbol: "¶" },
+];
 
-  const active = modules.find((m) => m.id === mode)!;
-
-  async function analyze(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setError("");
-    setOutput("");
-
-    if (!input.trim()) {
-      setError("Добавь текст для анализа.");
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const res = await fetch("/api/mentor", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          prompt: input,
-          grade: grade + " класс",
-          mode,
-        }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || "Ошибка сервера.");
-      }
-
-      if (typeof data.reply !== "string") {
-        throw new Error("Некорректный ответ наставника.");
-      }
-
-      setOutput(data.reply);
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Ошибка соединения."
-      );
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  const glass: React.CSSProperties = {
-    background: "rgba(25, 32, 25, 0.65)",
-    border: "1px solid rgba(223, 229, 202, 0.2)",
-    backdropFilter: "blur(20px)",
-    WebkitBackdropFilter: "blur(20px)",
-    borderRadius: "22px",
-  };
-
-  const button: React.CSSProperties = {
-    background: "#e8e2cf",
-    color: "#263126",
-    border: "none",
-    padding: "16px 34px",
-    borderRadius: "40px",
-    cursor: "pointer",
-    fontSize: "12px",
-    fontWeight: 700,
-    letterSpacing: "2px",
-    transition: "all .3s ease",
-  };
-
+function BrainArt() {
   return (
-    <main className="site">
+    <svg viewBox="0 0 500 420" className="brain-art" fill="none">
+      <g stroke="currentColor" strokeWidth="1" opacity=".35">
+        <circle cx="250" cy="205" r="165" />
+        <circle cx="250" cy="205" r="135" strokeDasharray="3 7" />
+        <ellipse cx="250" cy="205" rx="205" ry="80" transform="rotate(-28 250 205)" />
+        <ellipse cx="250" cy="205" rx="205" ry="80" transform="rotate(35 250 205)" />
+        <path d="M250 20V390M55 205H445" />
+      </g>
+      <g stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+        <path d="M245 94C211 62 166 89 174 129C135 124 116 165 139 192C111 220 132 257 157 264C143 298 178 327 207 310C218 341 243 344 250 318" />
+        <path d="M255 94C289 62 334 89 326 129C365 124 384 165 361 192C389 220 368 257 343 264C357 298 322 327 293 310C282 341 257 344 250 318" />
+        <path d="M250 95V318" />
+        <path d="M181 139C209 111 230 142 208 167C190 186 160 171 151 201" />
+        <path d="M143 222C177 191 210 221 188 247C171 267 153 252 160 282" />
+        <path d="M194 288C213 263 238 277 230 303" />
+        <path d="M319 139C291 111 270 142 292 167C310 186 340 171 349 201" />
+        <path d="M357 222C323 191 290 221 312 247C329 267 347 252 340 282" />
+        <path d="M306 288C287 263 262 277 270 303" />
+      </g>
+      <g fill="currentColor">
+        <circle cx="250" cy="205" r="4" />
+        <circle cx="85" cy="105" r="3" />
+        <circle cx="410" cy="305" r="3" />
+      </g>
+      <g stroke="currentColor" opacity=".55">
+        <path d="M85 105H130M410 305H370" />
+        <path d="M240 20H260M240 390H260" />
+      </g>
+      <text x="250" y="410" textAnchor="middle" fill="currentColor" fontSize="9" letterSpacing="4">
+        HUMAN MIND / FIG. 001
+      </text>
+    </svg>
+  );
+}
 
-      <style>{`
-        * {
-          box-sizing: border-box;
-        }
+export default function Home() {
+  return (
+    <main className="smart">
+      <style jsx global>{`
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { margin: 0; }
 
-        html {
-          scroll-behavior: smooth;
-        }
-
-        body {
-          margin: 0;
-          background: #172119;
-        }
-
-        .site {
-          min-height: 100vh;
-          background: #172119;
-          color: #f1efdf;
+        .smart {
+          --paper: #eeece3;
+          --light: #f7f5ed;
+          --ink: #292b25;
+          --olive: #68704f;
+          --dark: #353c2e;
+          --muted: #77796d;
+          color: var(--ink);
+          background: var(--paper);
           font-family: Arial, sans-serif;
           overflow: hidden;
         }
 
-        /* HERO */
+        .smart a { color: inherit; text-decoration: none; }
 
-        .hero {
-          position: relative;
-          min-height: 720px;
-          height: 100svh;
-          max-height: 1100px;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          padding: 30px 6%;
-          isolation: isolate;
-          overflow: hidden;
-          background: #172119;
-        }
-
-        .hero-art {
-          position: absolute;
-          inset: -5%;
-          z-index: -3;
-          background-image: url("/IMG_6655.jpeg");
-          background-size: cover;
-          background-position: center;
-          animation: paintingZoom 42s ease-in-out infinite alternate;
-          will-change: transform;
-        }
-
-        .hero-shade {
-          position: absolute;
-          inset: 0;
-          z-index: -2;
-          background:
-            linear-gradient(
-              180deg,
-              rgba(15, 20, 14, .48),
-              rgba(15, 20, 14, .12) 42%,
-              rgba(18, 27, 19, .72) 82%,
-              #172119 100%
-            );
-        }
-
-        .fog {
-          position: absolute;
-          inset: -30%;
-          z-index: -1;
-          pointer-events: none;
-          filter: blur(42px);
-          opacity: .75;
-          background:
-            radial-gradient(
-              ellipse at 20% 60%,
-              rgba(229, 226, 205, .35),
-              transparent 42%
-            ),
-            radial-gradient(
-              ellipse at 70% 40%,
-              rgba(207, 218, 192, .27),
-              transparent 44%
-            ),
-            radial-gradient(
-              ellipse at 48% 78%,
-              rgba(229, 221, 200, .23),
-              transparent 38%
-            );
-          animation: fogDrift 34s ease-in-out infinite alternate;
-        }
-
-        .fog-two {
-          opacity: .55;
-          filter: blur(60px);
-          background:
-            radial-gradient(
-              ellipse at 75% 70%,
-              rgba(226, 225, 207, .3),
-              transparent 42%
-            ),
-            radial-gradient(
-              ellipse at 25% 35%,
-              rgba(190, 207, 177, .25),
-              transparent 43%
-            );
-          animation: fogDriftTwo 45s ease-in-out infinite alternate;
-        }
-
-        .fog-three {
-          opacity: .35;
-          filter: blur(75px);
-          background:
-            radial-gradient(
-              ellipse at 50% 50%,
-              rgba(235, 230, 210, .25),
-              transparent 50%
-            );
-          animation: fogDrift 55s ease-in-out infinite alternate-reverse;
-        }
-
-        @keyframes paintingZoom {
-          from {
-            transform: scale(1);
-          }
-          to {
-            transform: scale(1.14);
-          }
-        }
-
-        @keyframes fogDrift {
-          from {
-            transform: translate(-5%, 2%) scale(1);
-          }
-          to {
-            transform: translate(7%, -4%) scale(1.13);
-          }
-        }
-
-        @keyframes fogDriftTwo {
-          from {
-            transform: translate(7%, -3%) scale(1.1);
-          }
-          to {
-            transform: translate(-8%, 5%) scale(1);
-          }
-        }
-
-        @keyframes appear {
-          from {
-            opacity: 0;
-            transform: translateY(25px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .hero-nav,
-        .hero-bottom,
-        .hero-center {
-          position: relative;
-          z-index: 2;
-        }
-
-        .hero-nav {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          gap: 20px;
-          animation: appear 1.4s ease both;
-        }
-
-        .brand {
-          font-size: 19px;
-          font-weight: 700;
-          letter-spacing: 4px;
-        }
-
-        .nav-links {
+        .sm-header {
+          min-height: 76px;
+          padding: 0 6%;
           display: flex;
           align-items: center;
-          gap: 28px;
-        }
-
-        .nav-links a {
-          color: #f1efdf;
-          text-decoration: none;
-          font-size: 12px;
-          letter-spacing: 1px;
-          transition: opacity .3s;
-        }
-
-        .nav-links a:hover {
-          opacity: .65;
-        }
-
-        .hero-center {
-          max-width: 900px;
-          width: 100%;
-          margin: auto;
-          text-align: center;
-          padding: 50px 0;
-          animation: appear 2s ease both;
-        }
-
-        .hero-eyebrow {
-          color: #e6e0c9;
-          font-size: 11px;
-          letter-spacing: 5px;
-          margin-bottom: 25px;
-        }
-
-        .hero-title {
-          margin: 0;
-          font-family: Georgia, serif;
-          font-weight: 400;
-          font-size: clamp(52px, 10vw, 112px);
-          line-height: 1.05;
-          letter-spacing: 5px;
-          color: #f2edda;
-          text-shadow: 0 5px 35px rgba(0,0,0,.25);
-        }
-
-        .hero-description {
-          max-width: 490px;
-          margin: 28px auto 35px;
-          color: #e6e3d4;
-          font-size: 14px;
-          line-height: 1.9;
-          letter-spacing: .4px;
-        }
-
-        .start-button {
-          background: #e8e2cf;
-          color: #293328;
-          border: 1px solid rgba(255,255,255,.35);
-          border-radius: 40px;
-          padding: 17px 48px;
-          font-size: 12px;
-          font-weight: 700;
-          letter-spacing: 3px;
-          cursor: pointer;
-          transition: all .35s ease;
-        }
-
-        .start-button:hover {
-          background: #f4efdf;
-          transform: translateY(-3px);
-          box-shadow: 0 10px 35px rgba(0,0,0,.2);
-        }
-
-        .hero-bottom {
-          display: flex;
           justify-content: space-between;
-          color: #e1dfc8;
-          font-size: 10px;
-          letter-spacing: 3px;
+          border-bottom: 1px solid rgba(41,43,37,.17);
         }
 
-        /* ABOUT */
-
-        .about {
-          padding: 110px 7%;
-          background: #172119;
+        .sm-logo {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          font: 24px Georgia, serif;
+          letter-spacing: -1px;
         }
 
-        .about-inner {
-          max-width: 1050px;
-          margin: auto;
+        .sm-mark { color: var(--olive); font-size: 30px; }
+
+        .sm-nav { display: flex; gap: 28px; font-size: 13px; color: #606257; }
+        .sm-nav a:hover { color: var(--olive); }
+
+        .sm-actions { display: flex; gap: 10px; align-items: center; }
+        .sm-login, .sm-pill {
+          padding: 11px 20px;
+          border: 1px solid var(--olive);
+          border-radius: 30px;
+          font-size: 12px;
+        }
+
+        .sm-pill {
+          color: white !important;
+          background: var(--dark);
+          transition: .25s;
+        }
+
+        .sm-pill:hover { background: var(--olive); transform: translateY(-2px); }
+
+        .sm-hero {
+          min-height: 570px;
+          padding: 65px 8%;
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 60px;
           align-items: center;
+          gap: 25px;
+          background:
+            radial-gradient(ellipse at 85% 42%, rgba(132,140,104,.2), transparent 40%),
+            linear-gradient(115deg,#eeece3,#e5e4d9);
+          position: relative;
         }
 
-        .eyebrow {
-          color: #aab99a;
-          font-size: 11px;
+        .sm-copy { position: relative; z-index: 2; }
+
+        .sm-eyebrow {
+          color: var(--olive);
+          text-transform: uppercase;
+          font-size: 10px;
           letter-spacing: 3px;
           margin-bottom: 20px;
         }
 
-        .section-title {
-          font-size: clamp(30px, 5vw, 48px);
-          line-height: 1.2;
-          font-weight: 400;
-          margin: 0;
+        .sm-hero h1 {
+          font: 400 clamp(48px,6.3vw,82px)/.99 Georgia,serif;
+          letter-spacing: -3px;
+          margin: 0 0 24px;
         }
 
-        .about-text {
-          color: #c0c5b5;
-          line-height: 2;
+        .sm-hero h1 em { color: var(--olive); font-weight: 400; }
+
+        .sm-description {
+          max-width: 420px;
+          color: #686a60;
           font-size: 14px;
-          margin: 0;
-        }
-
-        /* MODULES */
-
-        .modules {
-          padding: 85px 6%;
-          background: #202b22;
-        }
-
-        .section-inner {
-          max-width: 1100px;
-          margin: auto;
-        }
-
-        .module-grid {
-          display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 18px;
-        }
-
-        .module-card {
-          text-align: left;
-          padding: 30px 25px;
-          min-height: 220px;
-          color: #f1efdf;
-          cursor: pointer;
-          transition: transform .3s, background .3s;
-        }
-
-        .module-card:hover {
-          transform: translateY(-6px);
-          background: rgba(45, 58, 44, .8);
-        }
-
-        .module-number {
-          font-size: 12px;
-          letter-spacing: 3px;
-          margin-bottom: 42px;
-        }
-
-        .module-title {
-          font-size: 19px;
-          font-weight: 700;
-          margin-bottom: 12px;
-        }
-
-        .module-subtitle {
-          color: #bfc4b6;
-          font-size: 13px;
-          line-height: 1.7;
-        }
-
-        /* WORKSPACE */
-
-        .workspace {
-          padding: 85px 6%;
-          background: #172119;
-        }
-
-        .workspace-panel {
-          padding: 30px;
-          margin-top: 30px;
-        }
-
-        .field-label {
-          display: block;
-          margin-bottom: 12px;
-          font-size: 13px;
-          color: #e1e3d5;
-        }
-
-        .grade-select,
-        .text-input {
-          width: 100%;
-          background: rgba(8,15,10,.7);
-          color: #f1efdf;
-          border: 1px solid #617354;
-          border-radius: 12px;
-          padding: 14px;
-          font: inherit;
-          margin-bottom: 22px;
-        }
-
-        .text-input {
-          resize: vertical;
-          min-height: 170px;
-          line-height: 1.7;
-        }
-
-        .analyze-button {
-          background: #dfe3d0;
-          color: #263529;
-          border: none;
-          padding: 15px 24px;
-          border-radius: 30px;
-          font-weight: 700;
-          letter-spacing: 1px;
-          cursor: pointer;
-        }
-
-        .analyze-button:disabled {
-          opacity: .6;
-          cursor: wait;
-        }
-
-        .error {
-          color: #e5b48c;
-          margin-top: 18px;
-        }
-
-        .result {
-          margin-top: 25px;
-          border-top: 1px solid #52624b;
-          padding-top: 20px;
-          white-space: pre-wrap;
           line-height: 1.8;
-          color: #e2e5d7;
+          margin-bottom: 28px;
         }
 
-        /* FOOTER */
+        .sm-main-button {
+          display: inline-flex;
+          gap: 25px;
+          align-items: center;
+          padding: 15px 23px;
+          border-radius: 30px;
+          background: var(--dark);
+          color: white !important;
+          font-size: 13px;
+          transition: .25s;
+        }
 
-        .footer {
-          background: #111a14;
-          padding: 38px 6%;
-          text-align: center;
-          color: #aab19e;
-          font-size: 11px;
+        .sm-main-button:hover { transform: translateY(-3px); background: var(--olive); }
+
+        .sm-art {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 390px;
+          color: var(--olive);
+        }
+
+        .brain-art { width: 100%; max-width: 490px; animation: brainFloat 7s ease-in-out infinite; }
+
+        .sm-art-caption {
+          position: absolute;
+          right: 7%;
+          bottom: 28px;
+          color: var(--muted);
+          font: 11px Georgia,serif;
           letter-spacing: 2px;
         }
 
-        @media (max-width: 700px) {
-          .hero {
-            min-height: 650px;
-            height: 94svh;
-            padding: 24px 6%;
-          }
+        .sm-section { padding: 75px 8%; }
 
-          .hero-art {
-            background-position: 55% center;
-          }
-
-          .brand {
-            font-size: 15px;
-            letter-spacing: 2px;
-          }
-
-          .nav-links {
-            gap: 13px;
-          }
-
-          .nav-links a {
-            font-size: 10px;
-          }
-
-          .hero-title {
-            font-size: clamp(42px, 12vw, 72px);
-            letter-spacing: 2px;
-          }
-
-          .hero-description {
-            font-size: 13px;
-            padding: 0 8px;
-          }
-
-          .hero-bottom {
-            font-size: 8px;
-            letter-spacing: 1px;
-          }
-
-          .about {
-            padding: 75px 7%;
-          }
-
-          .about-inner {
-            grid-template-columns: 1fr;
-            gap: 28px;
-          }
-
-          .modules {
-            padding: 70px 6%;
-          }
-
-          .module-grid {
-            grid-template-columns: 1fr;
-          }
-
-          .module-card {
-            min-height: 180px;
-          }
-
-          .workspace {
-            padding: 70px 6%;
-          }
-
-          .workspace-panel {
-            padding: 20px;
-          }
+        .sm-heading {
+          display: flex;
+          align-items: end;
+          justify-content: space-between;
+          gap: 25px;
+          margin-bottom: 35px;
         }
 
-        @media (prefers-reduced-motion: reduce) {
-          *,
-          *::before,
-          *::after {
-            animation-duration: .01ms !important;
-            animation-iteration-count: 1 !important;
-            scroll-behavior: auto !important;
-          }
+        .sm-heading h2 {
+          font: 400 clamp(34px,4vw,52px)/1.08 Georgia,serif;
+          margin: 0;
+        }
+
+        .sm-heading p {
+          max-width: 290px;
+          font-size: 13px;
+          color: var(--muted);
+          line-height: 1.7;
+        }
+
+        .sm-modules {
+          display: grid;
+          grid-template-columns: repeat(3,1fr);
+          gap: 15px;
+        }
+
+        .sm-module {
+          min-height: 225px;
+          padding: 25px;
+          background: rgba(255,255,255,.34);
+          border: 1px solid rgba(41,43,37,.18);
+          border-radius: 4px;
+          position: relative;
+          transition: .3s;
+        }
+
+        .sm-module:hover {
+          transform: translateY(-5px);
+          background: var(--light);
+          border-color: var(--olive);
+        }
+
+        .sm-module-number { color: var(--olive); font: 13px Georgia,serif; }
+        .sm-module-symbol { position: absolute; right: 22px; top: 12px; font: 65px Georgia,serif; color: rgba(104,112,79,.22); }
+        .sm-module h3 { font: 400 24px Georgia,serif; margin: 42px 0 8px; }
+        .sm-module strong { font-size: 12px; font-weight: 500; }
+        .sm-module p { color: var(--muted); font-size: 12px; line-height: 1.7; max-width: 250px; }
+
+        .sm-daily {
+          margin: 0 8% 75px;
+          padding: 45px 5%;
+          background: var(--dark);
+          color: var(--light);
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          align-items: center;
+          gap: 35px;
+        }
+
+        .sm-daily h2 { font: 400 clamp(34px,4vw,50px)/1.08 Georgia,serif; margin: 10px 0 15px; }
+        .sm-daily p { color: #d2d3c7; font-size: 13px; line-height: 1.8; max-width: 410px; }
+        .sm-daily .sm-eyebrow { color: #c3c9a9; }
+
+        .sm-task-preview {
+          border: 1px solid rgba(255,255,255,.27);
+          background: rgba(255,255,255,.07);
+          padding: 24px;
+        }
+
+        .sm-task-preview small { color: #c4c9b0; letter-spacing: 2px; text-transform: uppercase; }
+        .sm-task-preview h3 { font: 400 25px Georgia,serif; margin: 18px 0 10px; }
+        .sm-task-preview p { margin: 0 0 18px; }
+
+        .sm-reward {
+          display: inline-block;
+          border: 1px solid #b9c19c;
+          color: #e2e7d0;
+          border-radius: 20px;
+          padding: 8px 14px;
+          font-size: 12px;
+        }
+
+        .sm-points {
+          padding: 50px 8%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 25px;
+          border-top: 1px solid rgba(41,43,37,.18);
+          border-bottom: 1px solid rgba(41,43,37,.18);
+        }
+
+        .sm-points h2 { font: 400 36px Georgia,serif; margin: 8px 0; }
+        .sm-points p { color: var(--muted); font-size: 13px; line-height: 1.7; max-width: 420px; }
+
+        .sm-points-balance {
+          border: 1px solid rgba(104,112,79,.45);
+          padding: 22px 30px;
+          min-width: 180px;
+          background: rgba(255,255,255,.25);
+        }
+
+        .sm-points-balance small { color: var(--muted); letter-spacing: 2px; }
+        .sm-points-balance strong { display: block; font: 42px Georgia,serif; color: var(--olive); margin-top: 8px; }
+
+        .sm-games { padding: 75px 8%; }
+
+        .sm-game-grid {
+          display: grid;
+          grid-template-columns: repeat(3,1fr);
+          gap: 13px;
+        }
+
+        .sm-game {
+          min-height: 155px;
+          padding: 20px;
+          border: 1px solid rgba(41,43,37,.2);
+          background: rgba(255,255,255,.28);
+          transition: .25s;
+        }
+
+        .sm-game:hover { background: var(--light); transform: translateY(-4px); }
+        .sm-game-symbol { color: var(--olive); font: 32px Georgia,serif; }
+        .sm-game h3 { font: 400 18px Georgia,serif; margin: 14px 0 5px; }
+        .sm-game p { font-size: 12px; color: var(--muted); margin: 0 0 15px; }
+        .sm-game span { color: var(--olive); font-size: 11px; }
+
+        .sm-about {
+          padding: 15px 8% 75px;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 40px;
+        }
+
+        .sm-about h2 { font: 400 42px/1.1 Georgia,serif; margin: 8px 0 15px; }
+        .sm-about p { color: var(--muted); font-size: 13px; line-height: 1.8; }
+
+        .sm-benefits { border-top: 1px solid rgba(41,43,37,.2); }
+        .sm-benefit { padding: 17px 0; border-bottom: 1px solid rgba(41,43,37,.2); font-size: 13px; }
+        .sm-benefit b { color: var(--olive); font: 20px Georgia,serif; margin-right: 15px; }
+
+        .sm-footer {
+          padding: 25px 8%;
+          border-top: 1px solid rgba(41,43,37,.2);
+          display: flex;
+          justify-content: space-between;
+          gap: 20px;
+          font-size: 11px;
+          color: var(--muted);
+        }
+
+        @keyframes brainFloat {
+          0%,100% { transform: translateY(0); }
+          50% { transform: translateY(-9px); }
+        }
+
+        @media(max-width:760px) {
+          .sm-header { padding: 15px 5%; min-height: 68px; }
+          .sm-logo { font-size: 19px; }
+          .sm-nav { display: none; }
+          .sm-actions { gap: 6px; }
+          .sm-login,.sm-pill { padding: 10px 12px; font-size: 10px; }
+          .sm-hero { grid-template-columns: 1fr; padding: 52px 7% 30px; }
+          .sm-hero h1 { font-size: clamp(48px,12vw,68px); letter-spacing: -2px; }
+          .sm-art { min-height: 285px; }
+          .brain-art { max-width: 350px; }
+          .sm-art-caption { bottom: 12px; right: 7%; }
+          .sm-section,.sm-games { padding: 55px 6%; }
+          .sm-heading { display: block; }
+          .sm-heading p { margin-top: 16px; }
+          .sm-modules,.sm-game-grid { grid-template-columns: 1fr; }
+          .sm-module { min-height: 200px; }
+          .sm-daily { margin: 0 6% 55px; padding: 32px 7%; grid-template-columns: 1fr; }
+          .sm-points { padding: 40px 7%; align-items: flex-start; flex-direction: column; }
+          .sm-about { padding: 10px 7% 55px; grid-template-columns: 1fr; gap: 20px; }
+          .sm-about h2 { font-size: 36px; }
+          .sm-footer { padding: 22px 6%; flex-direction: column; }
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+          .brain-art { animation: none; }
+          .smart * { scroll-behavior: auto !important; transition: none !important; }
         }
       `}</style>
 
-      {/* HERO */}
-
-      <section className="hero" id="top">
-        <div className="hero-art" aria-hidden="true" />
-        <div className="hero-shade" aria-hidden="true" />
-        <div className="fog" aria-hidden="true" />
-        <div className="fog fog-two" aria-hidden="true" />
-        <div className="fog fog-three" aria-hidden="true" />
-
-        <nav className="hero-nav">
-          <div className="brand">SMART MIND</div>
-
-          <div className="nav-links">
-            <a href="#about">О платформе</a>
-            <a href="#modules">Обучение</a>
-            <a href="#workspace">Практика</a>
-          </div>
+      <header className="sm-header">
+        <Link href="/" className="sm-logo">
+          <span className="sm-mark">✳</span> SMART MIND
+        </Link>
+        <nav className="sm-nav">
+          <a href="#modules">Модули</a>
+          <a href="#daily">Задания</a>
+          <a href="#games">Игры</a>
+          <a href="#about">О проекте</a>
         </nav>
+        <div className="sm-actions">
+          <Link href="/login" className="sm-login">Войти</Link>
+          <Link href="/login" className="sm-pill">Начать</Link>
+        </div>
+      </header>
 
-        <div className="hero-center">
-          <div className="hero-eyebrow">
-            A NEW WAY TO THINK
-          </div>
-
-          <h1 className="hero-title">
-            SMART MIND
+      <section className="sm-hero">
+        <div className="sm-copy">
+          <div className="sm-eyebrow">A space for curious minds · 2026</div>
+          <h1>
+            Развивай<br />
+            мышление.<br />
+            <em>Открывай</em><br />
+            возможности.
           </h1>
-
-          <p className="hero-description">
-            Образовательное пространство, где грамотность,
-            логика и критическое мышление становятся
-            навыками будущего.
+          <p className="sm-description">
+            Интерактивная платформа, где ежедневные задания,
+            интеллектуальные игры и образовательные модули
+            помогают развивать навыки мышления.
           </p>
-
-          <button
-            className="start-button"
-            onClick={() => {
-              setWorkspace(true);
-              setTimeout(() => {
-                document.getElementById("workspace")?.scrollIntoView({
-                  behavior: "smooth",
-                });
-              }, 50);
-            }}
-          >
-            START
-          </button>
+          <Link href="/login" className="sm-main-button">
+            Начать развитие <span>→</span>
+          </Link>
         </div>
-
-        <div className="hero-bottom">
-          <span>SMART LEARNING</span>
-          <span>01 — 11 CLASS</span>
+        <div className="sm-art">
+          <BrainArt />
         </div>
+        <div className="sm-art-caption">FIG. 001 / THE HUMAN MIND</div>
       </section>
 
-      {/* ABOUT */}
-
-      <section className="about" id="about">
-        <div className="about-inner">
+      <section className="sm-section" id="modules">
+        <div className="sm-heading">
           <div>
-            <div className="eyebrow">BEYOND EDUCATION</div>
-
-            <h2 className="section-title">
-              Не просто получать знания.{" "}
-              <span style={{ color: "#a9b996" }}>
-                Учиться мыслить.
-              </span>
-            </h2>
+            <div className="sm-eyebrow">01 / Learning modules</div>
+            <h2>Три направления.<br />Один путь развития.</h2>
           </div>
+          <p>Выбирай направление, выполняй упражнения и наблюдай за своим прогрессом.</p>
+        </div>
+        <div className="sm-modules">
+          {modules.map((item) => (
+            <Link href={item.href} className="sm-module" key={item.number}>
+              <span className="sm-module-number">{item.number}</span>
+              <span className="sm-module-symbol">{item.symbol}</span>
+              <h3>{item.title}</h3>
+              <strong>{item.subtitle}</strong>
+              <p>{item.description}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
 
-          <p className="about-text">
-            SMART MIND — интеллектуальная образовательная
-            платформа для школьников. Здесь можно развивать
-            навыки работы с текстом, тренировать логику,
-            анализировать информацию и отслеживать
-            собственный прогресс.
+      <section className="sm-daily" id="daily">
+        <div>
+          <div className="sm-eyebrow">02 / Daily challenge</div>
+          <h2>Каждый день —<br />новое испытание.</h2>
+          <p>
+            Небольшие задания на логику, внимание, память,
+            грамотность и критическое мышление.
+            Выполняй их и получай баллы.
+          </p>
+          <Link href="/login" className="sm-main-button">
+            Перейти к заданиям <span>→</span>
+          </Link>
+        </div>
+        <div className="sm-task-preview">
+          <small>Daily mind / Challenge</small>
+          <h3>Твоя ежедневная тренировка</h3>
+          <p>Несколько коротких заданий. Разные навыки. Один шаг вперёд.</p>
+          <span className="sm-reward">+ SMART POINTS</span>
+        </div>
+      </section>
+
+      <section className="sm-points">
+        <div>
+          <div className="sm-eyebrow">03 / Reward system</div>
+          <h2>Думай. Выполняй. Получай.</h2>
+          <p>
+            За выполненные задания начисляются SMART POINTS.
+            Используй их, чтобы открывать дополнительные
+            интеллектуальные мини-игры.
           </p>
         </div>
-      </section>
-
-      {/* MODULES */}
-
-      <section className="modules" id="modules">
-        <div className="section-inner">
-          <div className="eyebrow">YOUR LEARNING SPACE</div>
-
-          <h2 className="section-title" style={{ marginBottom: 40 }}>
-            Три направления развития
-          </h2>
-
-          <div className="module-grid">
-            {modules.map((item) => (
-              <button
-                key={item.id}
-                className="module-card"
-                onClick={() => {
-                  setMode(item.id);
-                  setWorkspace(true);
-                  setTimeout(() => {
-                    document.getElementById("workspace")?.scrollIntoView({
-                      behavior: "smooth",
-                    });
-                  }, 50);
-                }}
-                style={{
-                  ...glass,
-                  borderColor:
-                    mode === item.id
-                      ? item.color
-                      : "rgba(223,229,202,.19)",
-                }}
-              >
-                <div
-                  className="module-number"
-                  style={{ color: item.color }}
-                >
-                  {item.number}
-                </div>
-
-                <div className="module-title">
-                  {item.title}
-                </div>
-
-                <div className="module-subtitle">
-                  {item.subtitle}
-                </div>
-
-                <div
-                  style={{
-                    marginTop: 20,
-                    color: item.color,
-                    fontSize: 12,
-                    letterSpacing: 1,
-                  }}
-                >
-                  ОТКРЫТЬ ↗
-                </div>
-              </button>
-            ))}
-          </div>
+        <div className="sm-points-balance">
+          <small>SMART POINTS</small>
+          <strong>+10 SP</strong>
+          <small>За выполненное задание</small>
         </div>
       </section>
 
-      {/* WORKSPACE */}
-
-      {workspace && (
-        <section className="workspace" id="workspace">
-          <div className="section-inner">
-            <div className="eyebrow">
-              INTERACTIVE LEARNING
-            </div>
-
-            <h2 className="section-title">
-              Твоё образовательное пространство
-            </h2>
-
-            <div className="workspace-panel" style={glass}>
-              <label className="field-label" htmlFor="grade">
-                Выбери класс
-              </label>
-
-              <select
-                id="grade"
-                className="grade-select"
-                value={grade}
-                onChange={(e) => setGrade(e.target.value)}
-                style={{ maxWidth: 250 }}
-              >
-                {Array.from({ length: 11 }, (_, i) => (
-                  <option key={i + 1} value={String(i + 1)}>
-                    {i + 1} класс
-                  </option>
-                ))}
-              </select>
-
-              <div
-                style={{
-                  color: active.color,
-                  fontWeight: 700,
-                  marginBottom: 20,
-                  letterSpacing: 1,
-                }}
-              >
-                {active.title}
-              </div>
-
-              <form onSubmit={analyze}>
-                <textarea
-                  className="text-input"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder="Введи свой текст, рассуждение или утверждение..."
-                  rows={7}
-                />
-
-                <button
-                  className="analyze-button"
-                  type="submit"
-                  disabled={loading}
-                >
-                  {loading ? "АНАЛИЗИРУЮ..." : "НАЧАТЬ АНАЛИЗ ↗"}
-                </button>
-              </form>
-
-              {error && (
-                <p className="error">{error}</p>
-              )}
-
-              {output && (
-                <div className="result">
-                  <strong>РАЗБОР НАСТАВНИКА</strong>
-                  <p>{output}</p>
-                </div>
-              )}
-            </div>
+      <section className="sm-games" id="games">
+        <div className="sm-heading">
+          <div>
+            <div className="sm-eyebrow">04 / Smart games</div>
+            <h2>Играй и развивайся.</h2>
           </div>
-        </section>
-      )}
+          <p>Дополнительные игры, которые можно открывать за заработанные баллы.</p>
+        </div>
+        <div className="sm-game-grid">
+          {games.map((game) => (
+            <div className="sm-game" key={game.name}>
+              <div className="sm-game-symbol">{game.symbol}</div>
+              <h3>{game.name}</h3>
+              <p>{game.description}</p>
+              <span>{game.price} SMART POINTS</span>
+            </div>
+          ))}
+        </div>
+      </section>
 
-      {/* FOOTER */}
+      <section className="sm-about" id="about">
+        <div>
+          <div className="sm-eyebrow">05 / About SMART MIND</div>
+          <h2>Мышление — навык,<br />который развивается.</h2>
+          <p>
+            SMART MIND объединяет обучение, практику и игровые
+            механики в едином цифровом пространстве.
+            Здесь важно не просто получить правильный ответ,
+            а научиться самостоятельно находить решение.
+          </p>
+        </div>
+        <div className="sm-benefits">
+          <div className="sm-benefit"><b>01</b> Ежедневная интеллектуальная практика</div>
+          <div className="sm-benefit"><b>02</b> Разные форматы упражнений</div>
+          <div className="sm-benefit"><b>03</b> Личный прогресс и достижения</div>
+          <div className="sm-benefit"><b>04</b> Игры за заработанные баллы</div>
+        </div>
+      </section>
 
-      <footer className="footer">
-        SMART MIND © 2026
-        <p>THINK DEEPER. LEARN DIFFERENTLY.</p>
+      <footer className="sm-footer">
+        <span>✳ SMART MIND</span>
+        <span>Учись. Думай. Развивайся.</span>
+        <span>© 2026 SMART MIND</span>
       </footer>
-
     </main>
   );
 }
