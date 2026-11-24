@@ -1,87 +1,79 @@
 
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 
-type ModeId = "write" | "think" | "check";
+type Mode = "write" | "think" | "check";
 
-interface ModeItem {
-  id: ModeId;
-  code: string;
-  title: string;
-  subtitle: string;
-  sample: string;
-}
-
-const MODES: ModeItem[] = [
+const modes = [
   {
-    id: "write",
-    code: "01",
-    title: "SMART WRITE",
-    subtitle: "Речь, структура и выразительность текста",
-    sample: "Сильный текст начинается не со сложных слов, а с ясной мысли. Когда автор сам выстраивает переходы между идеями, читатель чувствует уверенность и логику.",
+    id: "write" as Mode,
+    number: "01",
+    name: "SMART WRITE",
+    description: "Работа с текстом, речью и грамотностью",
+    color: "#a3d9b8",
   },
   {
-    id: "think",
-    code: "02",
-    title: "SMART THINK",
-    subtitle: "Логика, связь причин и следствий",
-    sample: "Если мы повторяем шаблон без понимания, почему он работает, любая новая деталь сбивает с толку. Настоящее понимание проверяется на изменённом условии.",
+    id: "think" as Mode,
+    number: "02",
+    name: "SMART THINK",
+    description: "Логика, мышление и анализ информации",
+    color: "#b5c9ed",
   },
   {
-    id: "check",
-    code: "03",
-    title: "SMART CHECK",
-    subtitle: "Факты, источники и проверка доводов",
-    sample: "Утверждение кажется убедительным, когда звучит уверенно и опирается на популярный миф — но важно отделить проверяемый факт от красивой формулировки.",
+    id: "check" as Mode,
+    number: "03",
+    name: "SMART CHECK",
+    description: "Факты, аргументы и критическая оценка",
+    color: "#dfc49e",
   },
 ];
 
-const GRADES = Array.from({ length: 11 }, (_, i) => i + 1);
+const h = React.createElement;
 
 export default function HomePage() {
-  const [grade, setGrade] = useState(11);
-  const [mode, setMode] = useState<ModeId>("write");
+  const [grade, setGrade] = useState("11");
+  const [mode, setMode] = useState<Mode>("write");
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const activeMode = MODES.find((m) => m.id === mode) ?? MODES[0];
+  const active = modes.find((m) => m.id === mode)!;
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
     setOutput("");
 
     if (!input.trim()) {
-      setError("Напиши текст, рассуждение или тезис для разбора.");
+      setError("Сначала введи текст для анализа.");
       return;
     }
 
     setLoading(true);
 
     try {
-      const res = await fetch("/api/mentor", {
+      const response = await fetch("/api/mentor", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           prompt: input,
-          grade: `${grade} класс`,
+          grade: grade + " класс",
           mode,
         }),
       });
 
-      const data = await res.json();
+      const data = await response.json();
 
-      if (!res.ok) {
-        throw new Error(data.error || "Не удалось получить разбор.");
+      if (!response.ok) {
+        throw new Error(data.error || "Ошибка сервера.");
       }
 
       if (typeof data.reply !== "string") {
-        throw new Error("Сервер вернул некорректный ответ.");
+        throw new Error("Некорректный ответ наставника.");
       }
 
       setOutput(data.reply);
@@ -89,298 +81,433 @@ export default function HomePage() {
       setError(
         err instanceof Error
           ? err.message
-          : "Ошибка сети. Попробуй ещё раз."
+          : "Не удалось подключиться к серверу."
       );
     } finally {
       setLoading(false);
     }
   }
 
-  return (
-    <div
-      style={{ backgroundColor: "#090d0b", color: "#ede7da" }}
-      className="relative min-h-screen antialiased"
-    >
-      <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div
-          style={{ backgroundColor: "rgba(14, 60, 45, 0.45)" }}
-          className="animate-ambient-slow absolute -left-24 top-[-120px] h-[420px] w-[420px] rounded-full blur-[130px]"
-        />
-        <div
-          style={{ backgroundColor: "rgba(29, 117, 88, 0.22)" }}
-          className="animate-ambient-reverse absolute -right-28 top-[22%] h-[460px] w-[460px] rounded-full blur-[150px]"
-        />
-      </div>
+  const pageStyle = {
+    minHeight: "100vh",
+    background: "#090d0b",
+    color: "#ede7da",
+    padding: "30px 18px",
+    fontFamily: "Arial, sans-serif",
+  };
 
-      <div className="relative mx-auto max-w-6xl px-4 py-7 sm:px-6 lg:px-8">
-        <header className="animate-fade-rise glass-panel flex flex-col gap-5 rounded-3xl border border-emerald-800/35 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
-          <div className="space-y-2.5">
-            <div
-              style={{
-                backgroundColor: "rgba(14, 60, 45, 0.58)",
-                color: "#a3d9b8",
-              }}
-              className="inline-flex items-center gap-2 rounded-full border border-[#a3d9b8]/25 px-3.5 py-1 text-xs font-medium tracking-wider"
-            >
-              <span
-                style={{ backgroundColor: "#a3d9b8" }}
-                className="h-2 w-2 rounded-full"
-              />
-              SMART MIND • ПРИВАТНАЯ СТУДИЯ • 1–11 КЛАССЫ
-            </div>
+  const containerStyle = {
+    maxWidth: "1050px",
+    margin: "0 auto",
+  };
 
-            <h1
-              style={{ color: "#ede7da" }}
-              className="text-3xl font-bold tracking-tight sm:text-4xl"
-            >
-              Пространство, куда заходят думать
-            </h1>
+  const panelStyle = {
+    background: "#101713",
+    border: "1px solid #244333",
+    borderRadius: "20px",
+    padding: "22px",
+  };
 
-            <p
-              style={{ color: "#a6a093" }}
-              className="max-w-2xl text-sm leading-relaxed"
-            >
-              Никаких готовых шпаргалок и суеты. Спокойный разбор твоих мыслей,
-              аргументов и текстов с точными подсказками и живым откликом.
-            </p>
-          </div>
+  const buttonStyle = {
+    background: "linear-gradient(120deg,#1d7558,#0e3c2d)",
+    color: "#ffffff",
+    border: "none",
+    borderRadius: "12px",
+    padding: "15px 20px",
+    fontSize: "14px",
+    fontWeight: 700,
+    cursor: "pointer",
+  };
 
-          <div
-            style={{ backgroundColor: "rgba(9, 13, 11, 0.78)" }}
-            className="flex shrink-0 items-center justify-between gap-4 rounded-2xl border border-[#a3d9b8]/15 px-4 py-3.5 sm:flex-col sm:items-start sm:gap-1.5"
-          >
-            <label
-              htmlFor="grade"
-              style={{ color: "#a6a093" }}
-              className="text-[11px] font-semibold uppercase tracking-widest"
-            >
-              Уровень
-            </label>
+  return h(
+    "div",
+    { style: pageStyle },
+    h(
+      "div",
+      { style: containerStyle },
 
-            <select
-              id="grade"
-              value={grade}
-              onChange={(e) => setGrade(Number(e.target.value))}
-              style={{ backgroundColor: "#101613", color: "#a3d9b8" }}
-              className="cursor-pointer rounded-xl border border-emerald-700/45 px-3.5 py-2 text-sm font-semibold focus:border-[#a3d9b8] focus:outline-none"
-            >
-              {GRADES.map((n) => (
-                <option key={n} value={n}>
-                  {n} класс
-                </option>
-              ))}
-            </select>
-          </div>
-        </header>
+      h(
+        "header",
+        {
+          style: {
+            ...panelStyle,
+            marginBottom: "20px",
+            padding: "30px",
+          },
+        },
+        h(
+          "div",
+          {
+            style: {
+              color: "#a3d9b8",
+              fontSize: "12px",
+              letterSpacing: "2px",
+              marginBottom: "18px",
+            },
+          },
+          "SMART MIND  /  EDUCATIONAL PLATFORM"
+        ),
+        h(
+          "h1",
+          {
+            style: {
+              fontSize: "clamp(30px,5vw,48px)",
+              lineHeight: 1.15,
+              margin: "0 0 15px",
+              fontWeight: 800,
+            },
+          },
+          "Пространство, куда заходят думать"
+        ),
+        h(
+          "p",
+          {
+            style: {
+              color: "#aaa99e",
+              fontSize: "15px",
+              lineHeight: 1.7,
+              maxWidth: "650px",
+            },
+          },
+          "Интеллектуальная платформа для развития грамотности, логического и критического мышления школьников."
+        ),
+        h(
+          "div",
+          {
+            style: {
+              marginTop: "22px",
+              color: "#a3d9b8",
+              fontSize: "12px",
+            },
+          },
+          "1–11 КЛАССЫ  •  SMART LEARNING  •  AI MENTOR"
+        )
+      ),
 
-        <section
-          aria-label="Режимы работы"
-          className="animate-fade-rise-delay-1 mt-5 grid gap-3.5 sm:grid-cols-3"
-        >
-          {MODES.map((item) => {
-            const selected = item.id === mode;
+      h(
+        "section",
+        {
+          style: {
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: "12px",
+            marginBottom: "18px",
+          },
+        },
+        h(
+          "label",
+          {
+            htmlFor: "grade",
+            style: { color: "#aaa99e", fontSize: "13px" },
+          },
+          "ТВОЙ КЛАСС"
+        ),
+        h(
+          "select",
+          {
+            id: "grade",
+            value: grade,
+            onChange: (e: React.ChangeEvent<HTMLSelectElement>) =>
+              setGrade(e.target.value),
+            style: {
+              background: "#101713",
+              color: "#a3d9b8",
+              border: "1px solid #315b42",
+              borderRadius: "10px",
+              padding: "11px 18px",
+              fontSize: "14px",
+            },
+          },
+          ...Array.from({ length: 11 }, (_, i) =>
+            h(
+              "option",
+              { key: i + 1, value: String(i + 1) },
+              i + 1 + " класс"
+            )
+          )
+        )
+      ),
 
-            const cardClass = selected
-              ? "glass-card-active -translate-y-0.5 border-[#a3d9b8]/55 rounded-2xl border p-4 text-left transition-all duration-300"
-              : "glass-panel border-emerald-900/40 hover:-translate-y-0.5 hover:border-[#a3d9b8]/30 rounded-2xl border p-4 text-left transition-all duration-300";
+      h(
+        "section",
+        {
+          style: {
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))",
+            gap: "12px",
+            marginBottom: "22px",
+          },
+        },
+        ...modes.map((item) =>
+          h(
+            "button",
+            {
+              key: item.id,
+              type: "button",
+              onClick: () => {
+                setMode(item.id);
+                setError("");
+              },
+              style: {
+                ...panelStyle,
+                textAlign: "left" as const,
+                cursor: "pointer",
+                borderColor:
+                  mode === item.id ? item.color : "#244333",
+                borderWidth: mode === item.id ? "2px" : "1px",
+              },
+            },
+            h(
+              "div",
+              {
+                style: {
+                  color: item.color,
+                  fontSize: "12px",
+                  marginBottom: "12px",
+                  letterSpacing: "1px",
+                },
+              },
+              item.number
+            ),
+            h(
+              "div",
+              {
+                style: {
+                  fontSize: "16px",
+                  fontWeight: 800,
+                  marginBottom: "10px",
+                },
+              },
+              item.name
+            ),
+            h(
+              "div",
+              {
+                style: {
+                  color: "#aaa99e",
+                  fontSize: "13px",
+                  lineHeight: 1.5,
+                },
+              },
+              item.description
+            ),
+            h(
+              "div",
+              {
+                style: {
+                  marginTop: "15px",
+                  color: item.color,
+                  fontSize: "11px",
+                },
+              },
+              mode === item.id ? "● ВЫБРАНО" : "ОТКРЫТЬ РЕЖИМ"
+            )
+          )
+        )
+      ),
 
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => {
-                  setMode(item.id);
-                  setError("");
-                }}
-                className={cardClass}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span
-                      style={{ color: "#a6a093" }}
-                      className="font-mono text-[11px]"
-                    >
-                      {item.code}
-                    </span>
+      h(
+        "main",
+        {
+          style: {
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,320px),1fr))",
+            gap: "18px",
+          },
+        },
 
-                    <span
-                      style={{ color: selected ? "#a3d9b8" : "#ede7da" }}
-                      className="text-xs font-bold tracking-wider"
-                    >
-                      {item.title}
-                    </span>
-                  </div>
-
-                  <span
-                    style={{ color: selected ? "#a3d9b8" : "#a6a093" }}
-                    className="text-[10px] uppercase tracking-wider"
-                  >
-                    {selected ? "Активен" : "Открыть"}
-                  </span>
-                </div>
-
-                <p
-                  style={{ color: "#a6a093" }}
-                  className="mt-2 text-xs leading-relaxed"
-                >
-                  {item.subtitle}
-                </p>
-              </button>
-            );
-          })}
-        </section>
-
-        <main className="animate-fade-rise-delay-2 mt-6 grid gap-6 lg:grid-cols-12">
-          <form
-            onSubmit={handleSubmit}
-            className="glass-panel space-y-4 rounded-3xl border border-emerald-800/35 p-6 lg:col-span-6"
-          >
-            <div className="flex items-center justify-between gap-2">
-              <label
-                htmlFor="prompt"
-                style={{ color: "#a6a093" }}
-                className="text-xs font-semibold uppercase tracking-widest"
-              >
-                {activeMode.title} • Твой материал
-              </label>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setInput(activeMode.sample);
-                  setError("");
-                }}
-                style={{ color: "#a3d9b8" }}
-                className="rounded-lg px-2 py-1 text-xs font-medium hover:bg-[#a3d9b8]/10"
-              >
-                Подставить пример
-              </button>
-            </div>
-
-            <textarea
-              id="prompt"
-              rows={8}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Напиши черновик текста, аргумент или утверждение..."
-              style={{
-                backgroundColor: "rgba(9, 13, 11, 0.82)",
+        h(
+          "form",
+          {
+            onSubmit: submit,
+            style: {
+              ...panelStyle,
+              display: "flex",
+              flexDirection: "column" as const,
+              gap: "16px",
+            },
+          },
+          h(
+            "div",
+            {
+              style: {
+                color: active.color,
+                fontSize: "12px",
+                fontWeight: 700,
+                letterSpacing: "1px",
+              },
+            },
+            active.name + " / ТВОЙ МАТЕРИАЛ"
+          ),
+          h(
+            "textarea",
+            {
+              value: input,
+              onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                setInput(e.target.value),
+              placeholder:
+                "Напиши текст, рассуждение, аргумент или вопрос...",
+              rows: 10,
+              style: {
+                width: "100%",
+                boxSizing: "border-box" as const,
+                background: "#090d0b",
                 color: "#ede7da",
-              }}
-              className="w-full rounded-2xl border border-emerald-900/50 p-4 text-sm leading-relaxed focus:border-[#a3d9b8]/65 focus:outline-none"
-            />
+                border: "1px solid #31513e",
+                borderRadius: "13px",
+                padding: "16px",
+                fontSize: "14px",
+                lineHeight: 1.7,
+                resize: "vertical" as const,
+                outline: "none",
+              },
+            }
+          ),
+          h(
+            "div",
+            {
+              style: {
+                display: "flex",
+                justifyContent: "space-between",
+                color: "#99998f",
+                fontSize: "11px",
+              },
+            },
+            h("span", null, grade + " класс"),
+            h("span", null, input.length + " символов")
+          ),
+          error
+            ? h(
+                "div",
+                {
+                  style: {
+                    color: "#f0bd88",
+                    background: "#382719",
+                    padding: "12px",
+                    borderRadius: "10px",
+                    fontSize: "13px",
+                  },
+                },
+                error
+              )
+            : null,
+          h(
+            "button",
+            {
+              type: "submit",
+              disabled: loading,
+              style: {
+                ...buttonStyle,
+                opacity: loading ? 0.6 : 1,
+              },
+            },
+            loading ? "АНАЛИЗИРУЮ..." : "РАЗОБРАТЬ МЫСЛЬ"
+          ),
+          h(
+            "button",
+            {
+              type: "button",
+              onClick: () => {
+                setInput("");
+                setOutput("");
+                setError("");
+              },
+              style: {
+                background: "transparent",
+                color: "#aaa99e",
+                border: "1px solid #31513e",
+                borderRadius: "12px",
+                padding: "12px",
+                cursor: "pointer",
+              },
+            },
+            "Очистить"
+          )
+        ),
 
-            <div
-              style={{ color: "#a6a093" }}
-              className="flex items-center justify-between text-xs"
-            >
-              <span>{grade} класс</span>
-              <span>{input.length} символов</span>
-            </div>
+        h(
+          "section",
+          {
+            style: {
+              ...panelStyle,
+              minHeight: "350px",
+              display: "flex",
+              flexDirection: "column" as const,
+            },
+          },
+          h(
+            "div",
+            {
+              style: {
+                color: active.color,
+                fontSize: "12px",
+                letterSpacing: "1px",
+                marginBottom: "14px",
+                fontWeight: 700,
+              },
+            },
+            "ОТВЕТ AI-НАСТАВНИКА"
+          ),
+          h(
+            "h2",
+            {
+              style: {
+                fontSize: "19px",
+                margin: "0 0 20px",
+              },
+            },
+            active.name
+          ),
+          h(
+            "div",
+            {
+              style: {
+                borderTop: "1px solid #31513e",
+                paddingTop: "20px",
+                color: "#d4d0c5",
+                fontSize: "14px",
+                lineHeight: 1.8,
+                whiteSpace: "pre-wrap" as const,
+                overflowWrap: "anywhere" as const,
+                flex: 1,
+              },
+            },
+            loading
+              ? "Наставник анализирует материал. Подожди немного..."
+              : output ||
+                "Здесь появится подробный анализ твоего материала, сильные стороны, ошибки и рекомендации."
+          ),
+          h(
+            "div",
+            {
+              style: {
+                borderTop: "1px solid #31513e",
+                marginTop: "20px",
+                paddingTop: "15px",
+                color: "#a3d9b8",
+                fontSize: "11px",
+                letterSpacing: "1px",
+              },
+            },
+            "SMART MIND • ГЛУБИНА ВМЕСТО ШАБЛОНОВ"
+          )
+        )
+      ),
 
-            {error && (
-              <div className="rounded-2xl border border-amber-700/55 bg-amber-950/40 px-4 py-3 text-xs leading-relaxed text-amber-200">
-                {error}
-              </div>
-            )}
-
-            <div className="flex items-center gap-3 pt-1">
-              <button
-                type="submit"
-                disabled={loading}
-                style={{
-                  background:
-                    "linear-gradient(90deg, #1d7558 0%, #0e3c2d 100%)",
-                  color: "#ede7da",
-                }}
-                className="flex-1 rounded-2xl px-5 py-3.5 text-sm font-semibold transition-all duration-300 hover:brightness-110 disabled:opacity-50"
-              >
-                {loading ? "Наставник вникает..." : "Разобрать мысль"}
-              </button>
-
-              {input && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setInput("");
-                    setOutput("");
-                    setError("");
-                  }}
-                  style={{
-                    backgroundColor: "rgba(22, 31, 26, 0.85)",
-                    color: "#a6a093",
-                  }}
-                  className="rounded-2xl border border-emerald-800/45 px-4 py-3.5 text-xs font-medium hover:text-[#ede7da]"
-                >
-                  Очистить
-                </button>
-              )}
-            </div>
-          </form>
-
-          <section className="glass-panel flex flex-col justify-between rounded-3xl border border-emerald-800/35 p-6 lg:col-span-6">
-            <div>
-              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-emerald-900/50 pb-4">
-                <div>
-                  <span
-                    style={{ color: "#a3d9b8" }}
-                    className="text-[11px] font-semibold uppercase tracking-widest"
-                  >
-                    Разбор наставника
-                  </span>
-
-                  <h2
-                    style={{ color: "#ede7da" }}
-                    className="mt-0.5 text-base font-semibold"
-                  >
-                    {activeMode.title}
-                  </h2>
-                </div>
-
-                <span
-                  style={{
-                    backgroundColor: "rgba(9, 13, 11, 0.78)",
-                    color: "#a6a093",
-                  }}
-                  className="rounded-full border border-[#a3d9b8]/20 px-3 py-1 text-xs"
-                >
-                  {grade} класс
-                </span>
-              </div>
-
-              <div
-                style={{ color: "rgba(237, 231, 218, 0.95)" }}
-                className="mt-5 min-h-[250px] whitespace-pre-wrap text-sm leading-relaxed"
-              >
-                {loading ? (
-                  <div className="space-y-3.5 pt-2">
-                    <div className="shimmer-bar h-3.5 w-3/4 rounded-full" />
-                    <div className="shimmer-bar h-3.5 w-full rounded-full" />
-                    <div className="shimmer-bar h-3.5 w-5/6 rounded-full" />
-                    <div className="shimmer-bar h-3.5 w-2/3 rounded-full" />
-                  </div>
-                ) : output ? (
-                  <div className="animate-fade-rise">{output}</div>
-                ) : (
-                  <p style={{ color: "#a6a093" }}>
-                    Выбери режим, подставь пример или введи свой текст слева.
-                    Здесь появится разбор сильных сторон, зон роста и вопрос,
-                    который поможет продвинуть мысль дальше.
-                  </p>
-                )}
-              </div>
-            </div>
-
-            <footer
-              style={{ color: "#a6a093" }}
-              className="mt-6 flex items-center justify-between border-t border-emerald-900/50 pt-4 text-xs"
-            >
-              <span>SMART MIND</span>
-              <span>Глубина вместо шаблонов</span>
-            </footer>
-          </section>
-        </main>
-      </div>
-    </div>
+      h(
+        "footer",
+        {
+          style: {
+            textAlign: "center" as const,
+            color: "#777d73",
+            fontSize: "11px",
+            padding: "35px 10px 10px",
+          },
+        },
+        "SMART MIND © 2026 — ПЛАТФОРМА РАЗВИТИЯ МЫШЛЕНИЯ"
+      )
+    )
   );
 }
