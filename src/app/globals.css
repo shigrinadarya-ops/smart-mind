@@ -1,3 +1,125 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --bg-obsidian: #090d0b;
+  --bg-surface: #101613;
+  --bg-elevated: #161f1a;
+  --pine: #0e3c2d;
+  --emerald-accent: #1d7558;
+  --pistachio: #a3d9b8;
+  --sand: #ede7da;
+  --muted-sand: #a6a093;
+}
+
+html,
+body {
+  background-color: var(--bg-obsidian);
+  color: var(--sand);
+  overflow-x: hidden;
+}
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(18px, -14px, 0) scale(1.05);
+  }
+}
+
+@keyframes floatSlowReverse {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-16px, 12px, 0) scale(1.04);
+  }
+}
+
+@keyframes fadeRise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes shimmerLine {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-ambient-slow {
+  animation: floatSlow 14s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-ambient-reverse {
+  animation: floatSlowReverse 18s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-fade-rise {
+  animation: fadeRise 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-fade-rise-delay-1 {
+  animation: fadeRise 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both;
+}
+
+.animate-fade-rise-delay-2 {
+  animation: fadeRise 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.16s both;
+}
+
+.shimmer-bar {
+  background: linear-gradient(
+    90deg,
+    rgba(29, 117, 88, 0.14) 0%,
+    rgba(163, 217, 184, 0.42) 50%,
+    rgba(29, 117, 88, 0.14) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerLine 1.8s ease-in-out infinite;
+}
+
+.glass-panel {
+  background: linear-gradient(
+    160deg,
+    rgba(22, 31, 26, 0.88) 0%,
+    rgba(14, 20, 17, 0.94) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 0 rgba(163, 217, 184, 0.14),
+    0 24px 60px -18px rgba(0, 0, 0, 0.72);
+}
+
+.glass-card-active {
+  background: linear-gradient(
+    145deg,
+    rgba(14, 60, 45, 0.78) 0%,
+    rgba(16, 22, 19, 0.95) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 0 rgba(163, 217, 184, 0.28),
+    0 18px 40px -16px rgba(14, 60, 45, 0.85);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-ambient-slow,
+  .animate-ambient-reverse,
+  .animate-fade-rise,
+  .animate-fade-rise-delay-1,
+  .animate-fade-rise-delay-2,
+  .shimmer-bar {
+    animation: none !important;
+  }
+}
