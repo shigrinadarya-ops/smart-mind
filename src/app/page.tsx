@@ -303,4 +303,40 @@ export default function HomePage() {
                   className="rounded-full border border-[#a3d9b8]/20 px-3 py-1 text-xs"
                 >
                   {grade} класс
-                
+                </span>
+              </div>
+
+              <div
+                style={{ color: "rgba(237, 231, 218, 0.95)" }}
+                className="mt-5 min-h-[250px] whitespace-pre-wrap text-sm leading-relaxed"
+              >
+                {loading ? (
+                  <div className="space-y-3.5 pt-2">
+                    <div className="shimmer-bar h-3.5 w-3/4 rounded-full" />
+                    <div className="shimmer-bar h-3.5 w-full rounded-full" />
+                    <div className="shimmer-bar h-3.5 w-5/6 rounded-full" />
+                    <div className="shimmer-bar h-3.5 w-2/3 rounded-full" />
+                  </div>
+                ) : output ? (
+                  <div className="animate-fade-rise">{output}</div>
+                ) : (
+                  <p style={{ color: "#a6a093" }}>
+                    Выбери режим, подставь пример или введи свой текст слева. Здесь плавно появится разбор сильных сторон, зон роста и вопрос, который поможет продвинуть мысль дальше.
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <footer
+              style={{ color: "#a6a093" }}
+              className="mt-6 flex items-center justify-between border-t border-emerald-900/50 pt-4 text-xs"
+            >
+              <span>SMART MIND</span>
+              <span>Глубина вместо шаблонов</span>
+            </footer>
+          </section>
+        </main>
+      </div>
+    </div>
+  );
+}
