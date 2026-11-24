@@ -2,8 +2,9 @@
 "use client";
 
 import { useState } from "react";
+import type { FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "../../lib/supabase";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -15,7 +16,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
     setMessage("");
@@ -38,7 +39,7 @@ export default function LoginPage() {
           return;
         }
 
-        setMessage("Проверь почту и подтверди регистрацию.");
+        setMessage("Регистрация создана. Проверь почту и подтверди адрес.");
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email,
@@ -52,7 +53,9 @@ export default function LoginPage() {
       }
     } catch (error) {
       setMessage(
-        error instanceof Error ? error.message : "Произошла ошибка."
+        error instanceof Error
+          ? error.message
+          : "Не удалось выполнить операцию."
       );
     } finally {
       setLoading(false);
@@ -73,7 +76,7 @@ export default function LoginPage() {
         <p className="mt-2 text-sm text-[#b9c0ad]">
           {mode === "login"
             ? "Войди, чтобы продолжить обучение."
-            : "Присоединяйся к SMART MIND."}
+            : "Создай аккаунт SMART MIND."}
         </p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">
@@ -115,18 +118,19 @@ export default function LoginPage() {
             {loading
               ? "Подождите..."
               : mode === "login"
-              ? "Войти"
-              : "Зарегистрироваться"}
+                ? "Войти"
+                : "Зарегистрироваться"}
           </button>
         </form>
 
         {message && (
-          <p className="mt-5 rounded-lg bg-[#354333] p-3 text-sm">
+          <p className="mt-5 rounded-lg bg-[#354333] p-3 text-sm break-words">
             {message}
           </p>
         )}
 
         <button
+          type="button"
           onClick={() => {
             setMode(mode === "login" ? "register" : "login");
             setMessage("");
@@ -137,6 +141,10 @@ export default function LoginPage() {
             ? "Нет аккаунта? Зарегистрироваться"
             : "Уже есть аккаунт? Войти"}
         </button>
+
+        <a href="/" className="block mt-6 text-center text-sm text-[#aeb99b]">
+          На главную
+        </a>
       </div>
     </main>
   );
