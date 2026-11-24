@@ -27,7 +27,9 @@ export default function LoginPage() {
           email,
           password,
           options: {
-            data: { full_name: fullName },
+            data: {
+              full_name: fullName,
+            },
             emailRedirectTo: `${window.location.origin}/login`,
           },
         });
@@ -39,7 +41,9 @@ export default function LoginPage() {
           return;
         }
 
-        setMessage("Проверь почту и подтверди регистрацию.");
+        setMessage(
+          "Регистрация создана. Проверь электронную почту и подтверди адрес."
+        );
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email,
@@ -53,7 +57,9 @@ export default function LoginPage() {
       }
     } catch (error) {
       setMessage(
-        error instanceof Error ? error.message : "Произошла ошибка."
+        error instanceof Error
+          ? error.message
+          : "Не удалось выполнить операцию."
       );
     } finally {
       setLoading(false);
@@ -62,7 +68,7 @@ export default function LoginPage() {
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-[#172119] px-5 py-10 text-[#eee9d8]">
-      <div className="w-full max-w-md rounded-2xl border border-[#78836c]/40 bg-[#26372b] p-7">
+      <div className="w-full max-w-md rounded-2xl border border-[#78836c]/40 bg-[#26372b] p-7 shadow-2xl">
         <a href="/" className="text-sm tracking-[0.3em] text-[#c6cba9]">
           SMART MIND
         </a>
@@ -140,7 +146,10 @@ export default function LoginPage() {
             : "Уже есть аккаунт? Войти"}
         </button>
 
-        <a href="/" className="block mt-6 text-center text-sm text-[#aeb99b]">
+        <a
+          href="/"
+          className="block mt-6 text-center text-sm text-[#aeb99b]"
+        >
           На главную
         </a>
       </div>
