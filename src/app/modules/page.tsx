@@ -1,277 +1,91 @@
 
+"use client";
+
 import Link from "next/link";
 
 const modules = [
   {
     number: "01",
-    name: "SMART WRITE",
+    title: "SMART WRITE",
     subtitle: "Грамотность и работа с текстом",
-    description:
-      "Развивай навыки письма, учись формулировать мысли, находить и исправлять ошибки.",
-    tag: "TEXT & LITERACY",
+    description: "Чтение, орфография, пунктуация и письменная речь.",
     href: "/modules/write",
   },
   {
     number: "02",
-    name: "SMART THINK",
+    title: "SMART THINK",
     subtitle: "Логика и развитие мышления",
-    description:
-      "Тренируй логическое мышление, внимание, память и способность находить нестандартные решения.",
-    tag: "LOGIC & THINKING",
+    description: "Закономерности, головоломки, анализ и решение задач.",
     href: "/modules/think",
   },
   {
     number: "03",
-    name: "SMART CHECK",
-    subtitle: "Критическое мышление и анализ",
-    description:
-      "Учись анализировать информацию, проверять факты и отличать аргументы от мнений.",
-    tag: "CRITICAL THINKING",
+    title: "SMART CHECK",
+    subtitle: "Критическое мышление",
+    description: "Проверка информации, аргументы и поиск противоречий.",
     href: "/modules/check",
   },
 ];
 
 export default function ModulesPage() {
   return (
-    <main className="modules-page">
-      <header className="topbar">
-        <Link href="/" className="logo">
+    <main className="min-h-screen bg-[#172119] text-[#eee9d8] px-5 py-10 md:px-12">
+      <header className="max-w-6xl mx-auto flex justify-between items-center border-b border-[#65745f]/40 pb-6">
+        <Link href="/" className="tracking-[0.25em] text-[#d4d5b5]">
           SMART MIND
         </Link>
 
-        <nav>
-          <Link href="/about">О проекте</Link>
-          <Link href="/modules" className="active">Направления</Link>
-        </nav>
+        <Link href="/dashboard" className="text-sm text-[#c6cba9]">
+          Личный кабинет
+        </Link>
       </header>
 
-      <section className="intro">
-        <p className="eyebrow">THE LEARNING SPACE</p>
+      <section className="max-w-6xl mx-auto pt-16 pb-10">
+        <p className="text-xs tracking-[0.3em] text-[#b6c39e]">
+          НАПРАВЛЕНИЯ ОБУЧЕНИЯ
+        </p>
 
-        <h1>
-          Выбери своё
-          <br />
-          <span>направление.</span>
+        <h1 className="text-4xl md:text-6xl font-serif mt-5">
+          Исследуй. Думай. Анализируй.
         </h1>
 
-        <p className="intro-text">
-          Три направления. Разные навыки. Одна цель —
-          научиться мыслить самостоятельно.
+        <p className="mt-5 max-w-2xl text-[#c1c9b5] leading-7">
+          Выбирай направление, развивай навыки и отслеживай собственный
+          прогресс в SMART MIND.
         </p>
       </section>
 
-      <section className="module-list">
+      <section className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-5">
         {modules.map((item) => (
-          <Link href={item.href} className="module-card" key={item.number}>
-            <div className="card-top">
-              <span className="number">{item.number}</span>
-              <span className="tag">{item.tag}</span>
-            </div>
+          <Link
+            href={item.href}
+            key={item.number}
+            className="group rounded-2xl border border-[#65745f]/50 bg-[#26372b] p-7 transition hover:bg-[#304333]"
+          >
+            <p className="text-sm tracking-[0.25em] text-[#aeb99b]">
+              {item.number}
+            </p>
 
-            <div className="card-content">
-              <h2>{item.name}</h2>
-              <h3>{item.subtitle}</h3>
-              <p>{item.description}</p>
-            </div>
+            <h2 className="text-2xl font-serif mt-12">
+              {item.title}
+            </h2>
 
-            <div className="card-bottom">
-              <span>ПЕРЕЙТИ К МОДУЛЮ</span>
-              <span className="arrow">↗</span>
-            </div>
+            <p className="text-[#d0d5bd] mt-3">{item.subtitle}</p>
+
+            <p className="text-sm text-[#aeb99b] mt-5 leading-6">
+              {item.description}
+            </p>
+
+            <p className="mt-10 text-sm text-[#d4d5b5] group-hover:underline">
+              Перейти к модулю →
+            </p>
           </Link>
         ))}
       </section>
 
-      <footer>
-        <span>SMART MIND</span>
-        <span>THINK. LEARN. CREATE.</span>
+      <footer className="max-w-6xl mx-auto mt-20 border-t border-[#65745f]/40 pt-6 text-sm text-[#aeb99b]">
+        SMART MIND · Развитие интеллектуальных навыков
       </footer>
-
-      <style jsx>{`
-        .modules-page {
-          min-height: 100vh;
-          background: #172119;
-          color: #eeeadd;
-          padding: 0 7%;
-          font-family: Arial, sans-serif;
-        }
-
-        .topbar {
-          min-height: 85px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          border-bottom: 1px solid #465044;
-        }
-
-        .logo {
-          color: #eeeadd;
-          text-decoration: none;
-          font-size: 17px;
-          letter-spacing: 4px;
-          font-weight: 600;
-        }
-
-        nav {
-          display: flex;
-          gap: 30px;
-        }
-
-        nav a {
-          color: #b9c0ae;
-          text-decoration: none;
-          font-size: 13px;
-        }
-
-        nav a.active {
-          color: #e8e2cf;
-          border-bottom: 1px solid #c9d8b6;
-          padding-bottom: 7px;
-        }
-
-        .intro {
-          padding: 95px 0 55px;
-        }
-
-        .eyebrow {
-          color: #aab99a;
-          font-size: 10px;
-          letter-spacing: 5px;
-        }
-
-        h1 {
-          font-family: Georgia, serif;
-          font-weight: 400;
-          font-size: clamp(46px, 8vw, 82px);
-          line-height: 1.05;
-          margin: 25px 0;
-        }
-
-        h1 span {
-          color: #bdc9a9;
-          font-style: italic;
-        }
-
-        .intro-text {
-          max-width: 470px;
-          color: #b9c0ae;
-          line-height: 1.8;
-          font-size: 14px;
-        }
-
-        .module-list {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 18px;
-          padding-bottom: 100px;
-        }
-
-        .module-card {
-          min-height: 340px;
-          padding: 25px;
-          border: 1px solid #59634f;
-          background: #202c22;
-          color: #eeeadd;
-          text-decoration: none;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          transition: 0.3s ease;
-        }
-
-        .module-card:hover {
-          background: #2c3a2d;
-          transform: translateY(-6px);
-          border-color: #bdc9a9;
-        }
-
-        .card-top,
-        .card-bottom {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        .number {
-          font-family: Georgia, serif;
-          font-size: 27px;
-          color: #bdc9a9;
-        }
-
-        .tag {
-          font-size: 9px;
-          letter-spacing: 2px;
-          color: #aab99a;
-        }
-
-        .card-content {
-          margin: 35px 0;
-        }
-
-        h2 {
-          font-family: Georgia, serif;
-          font-size: 27px;
-          font-weight: 400;
-          margin-bottom: 12px;
-        }
-
-        h3 {
-          font-size: 13px;
-          font-weight: 400;
-          color: #bdc9a9;
-        }
-
-        .card-content p {
-          color: #b9c0ae;
-          font-size: 13px;
-          line-height: 1.8;
-          margin-top: 20px;
-        }
-
-        .card-bottom {
-          border-top: 1px solid #59634f;
-          padding-top: 18px;
-          font-size: 9px;
-          letter-spacing: 2px;
-          color: #bdc9a9;
-        }
-
-        .arrow {
-          font-size: 22px;
-        }
-
-        footer {
-          border-top: 1px solid #465044;
-          padding: 25px 0;
-          display: flex;
-          justify-content: space-between;
-          color: #aab99a;
-          font-size: 10px;
-          letter-spacing: 2px;
-        }
-
-        @media (max-width: 750px) {
-          .module-list {
-            grid-template-columns: 1fr;
-          }
-
-          .module-card {
-            min-height: 280px;
-          }
-
-          nav {
-            gap: 14px;
-          }
-
-          nav a {
-            font-size: 11px;
-          }
-
-          .intro {
-            padding-top: 70px;
-          }
-        }
-      `}</style>
     </main>
   );
 }
