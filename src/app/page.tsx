@@ -1,16 +1,16 @@
 
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 const images = {
-  hero: "/images/IMG_6681.jpeg",
-  write: "/images/IMG_6682.jpeg",
-  think: "/images/IMG_6683.jpeg",
-  check: "/images/IMG_6684.jpeg",
-  castle: "/images/IMG_6685.jpeg",
-  botanical: "/images/53472225-C658-47D6-B54D-443BAFCE52D1.png",
+  hero: "/IMG_6681.jpeg",
+  write: "/IMG_6682.jpeg",
+  think: "/IMG_6683.jpeg",
+  check: "/IMG_6684.jpeg",
+  castle: "/IMG_6685.jpeg",
+  botanical: "/53472225-C658-47D6-B54D-443BAFCE52D1.png",
 };
 
 const modules = [
@@ -19,256 +19,246 @@ const modules = [
     title: "SMART WRITE",
     subtitle: "Грамотность и работа с текстом",
     description:
-      "Работай со словами, находи ошибки, развивай письменную речь и точность формулировок.",
+      "Работа с языком, орфографией, структурой и точностью письменной речи.",
     image: images.write,
     href: "/modules/write",
-    className: "write",
   },
   {
     number: "02",
     title: "SMART THINK",
     subtitle: "Логика и мышление",
     description:
-      "Решай задачи, замечай закономерности и учись находить нестандартные решения.",
+      "Задачи на закономерности, последовательности и нестандартные решения.",
     image: images.think,
     href: "/modules/think",
-    className: "think",
   },
   {
     number: "03",
     title: "SMART CHECK",
     subtitle: "Критическое мышление",
     description:
-      "Анализируй информацию, проверяй утверждения и отличай факты от предположений.",
+      "Анализ информации, проверка утверждений и поиск логических ошибок.",
     image: images.check,
     href: "/modules/check",
-    className: "check",
   },
 ];
 
 export default function Home() {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 30);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
-    <main className="site">
-      <header className={`header ${scrolled ? "header-scrolled" : ""}`}>
-        <Link href="/" className="brand">
-          <span className="brand-symbol">✳</span>
-          <span>SMART MIND</span>
+    <main>
+      <header className="header">
+        <Link href="/" className="logo">
+          SMART<span>MIND</span>
         </Link>
 
-        <nav className="navigation">
-          <a href="#platform">Платформа</a>
-          <a href="#modules">Модули</a>
+        <nav>
+          <a href="#modules">Направления</a>
+          <a href="#daily">Ежедневно</a>
           <a href="#about">О проекте</a>
-          <a href="#daily">Ежедневные задания</a>
         </nav>
 
-        <div className="header-actions">
-          <Link href="/login" className="login-button">
-            Войти
-          </Link>
-          <Link href="/login" className="start-button">
-            Начать <span>↗</span>
-          </Link>
-        </div>
+        <Link href="/login" className="account">
+          Личный кабинет <span>↗</span>
+        </Link>
       </header>
 
-      <section className="hero" id="platform">
-        <div className="paper-grid" />
-
+      <section className="hero">
         <div className="hero-copy">
           <div className="eyebrow">
-            <span className="eyebrow-line" />
-            РАЗВИВАЙСЯ. ДУМАЙ. ДОСТИГАЙ.
+            <span /> ИНТЕЛЛЕКТУАЛЬНАЯ ПЛАТФОРМА
           </div>
 
           <h1>
             Развивай
             <br />
-            мышление.
+            <em>способность</em>
             <br />
-            <em>Создавай</em>
-            <br />
-            <em>возможности.</em>
+            мыслить.
           </h1>
 
-          <p className="hero-description">
-            Интеллектуальная платформа для развития грамотности,
-            памяти и критического мышления.
+          <p className="hero-text">
+            Пространство для развития грамотности, логики и критического
+            мышления. Каждый день — новые интеллектуальные задачи.
           </p>
 
-          <Link href="/login" className="hero-button">
-            Начать развитие <span>⟶</span>
-          </Link>
+          <div className="hero-actions">
+            <Link href="/login" className="primary-btn">
+              Начать развитие <span>↗</span>
+            </Link>
+            <a href="#modules" className="secondary-btn">
+              Исследовать платформу ↓
+            </a>
+          </div>
 
           <div className="hero-note">
-            <span>01</span>
-            <span className="note-line" />
-            ИССЛЕДУЙ СВОИ ВОЗМОЖНОСТИ
+            <span>01 / 03</span>
+            <span>THINK · LEARN · DEVELOP</span>
           </div>
         </div>
 
         <div className="hero-art">
-          <div className="art-arch" />
-          <div className="art-orbit orbit-one" />
-          <div className="art-orbit orbit-two" />
-          <div className="art-orbit orbit-three" />
-
-          <div className="art-moon" />
-
-          <div className="hero-brain">
-            <img src={images.hero} alt="Объёмная анатомическая композиция" />
+          <div className="art-glow" />
+          <div className="art-frame">
+            <Image
+              src={images.hero}
+              alt="Неоклассическая композиция с мозгом"
+              fill
+              priority
+              sizes="(max-width: 800px) 100vw, 55vw"
+              className="hero-image"
+            />
           </div>
-
-          <div className="art-botanical">
-            <img src={images.botanical} alt="" />
-          </div>
-
-          <div className="art-star star-one">✳</div>
-          <div className="art-star star-two">✧</div>
           <div className="art-caption">
-            <span>THE ART OF THINKING</span>
-            <span>EST. SMART MIND</span>
+            <span>FIG. 001</span>
+            <span>THE HUMAN MIND</span>
           </div>
-        </div>
-
-        <div className="hero-bottom">
-          <span>ИНТЕЛЛЕКТУАЛЬНОЕ РАЗВИТИЕ</span>
-          <span>ПРОКРУТИТЕ ВНИЗ ↓</span>
-          <span>01 — 03</span>
+          <div className="art-side">KNOWLEDGE IS A JOURNEY</div>
         </div>
       </section>
 
-      <section className="modules-section" id="modules">
+      <div className="ticker">
+        <span>THINK DEEPER</span>
+        <b>✳</b>
+        <span>QUESTION MORE</span>
+        <b>✳</b>
+        <span>LEARN EVERY DAY</span>
+        <b>✳</b>
+        <span>THINK DEEPER</span>
+      </div>
+
+      <section className="modules section" id="modules">
         <div className="section-heading">
           <div>
-            <div className="eyebrow">
-              <span className="eyebrow-line" />
-              НАПРАВЛЕНИЯ РАЗВИТИЯ
-            </div>
+            <div className="eyebrow">THE THREE PILLARS</div>
             <h2>
               Три направления.
               <br />
-              <em>Одна цель.</em>
+              <em>Один интеллект.</em>
             </h2>
           </div>
-
           <p>
-            Выбирай направление, тренируй навыки
-            и постепенно отслеживай свой прогресс.
+            Три взаимосвязанных направления, которые помогают работать с
+            информацией, формулировать мысли и принимать обоснованные решения.
           </p>
         </div>
 
         <div className="module-grid">
-          {modules.map((item) => (
+          {modules.map((module) => (
             <Link
-              href={item.href}
-              className={`module-card ${item.className}`}
-              key={item.number}
+              href={module.href}
+              className="module-card"
+              key={module.number}
             >
-              <div className="module-top">
-                <span>{item.number} / 03</span>
+              <div className="module-image">
+                <Image
+                  src={module.image}
+                  alt={module.title}
+                  fill
+                  sizes="(max-width: 800px) 100vw, 33vw"
+                />
+                <span className="module-number">{module.number}</span>
                 <span className="module-arrow">↗</span>
               </div>
 
-              <div className="module-art">
-                <img src={item.image} alt={item.subtitle} />
-              </div>
-
-              <div className="module-content">
-                <div className="module-subtitle">{item.subtitle}</div>
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
+              <div className="module-info">
+                <div className="module-subtitle">{module.subtitle}</div>
+                <h3>{module.title}</h3>
+                <p>{module.description}</p>
+                <span className="module-link">ОТКРЫТЬ НАПРАВЛЕНИЕ →</span>
               </div>
             </Link>
           ))}
         </div>
       </section>
 
-      <section className="daily-section" id="daily">
-        <div className="daily-intro">
-          <div className="eyebrow">
-            <span className="eyebrow-line" />
-            SMART DAILY
-          </div>
+      <section className="daily" id="daily">
+        <div className="daily-content">
+          <div className="eyebrow">YOUR DAILY CHALLENGE</div>
           <h2>
-            Ежедневные задания.
+            Интеллект
             <br />
-            <em>Маленькие шаги —</em>
-            <br />
-            к большим достижениям.
+            <em>требует практики.</em>
           </h2>
           <p>
-            Короткие интеллектуальные упражнения,
-            которые помогают регулярно тренировать
-            разные навыки мышления.
+            Каждый день — небольшая подборка заданий на внимание, память,
+            грамотность и логику. Выполняй задания, отслеживай прогресс и
+            получай SMART POINTS.
           </p>
-          <Link href="/dashboard" className="daily-link">
-            Перейти к заданиям <span>⟶</span>
+          <Link href="/dashboard" className="primary-btn">
+            Перейти к заданиям <span>↗</span>
           </Link>
         </div>
 
-        <div className="benefits">
-          <div className="benefit">
-            <span className="benefit-number">01</span>
-            <span className="benefit-icon">✧</span>
-            <h3>Память и внимание</h3>
-            <p>Упражнения на концентрацию и запоминание.</p>
-          </div>
-
-          <div className="benefit">
-            <span className="benefit-number">02</span>
-            <span className="benefit-icon">✎</span>
-            <h3>Грамотность</h3>
-            <p>Работа со словами, текстами и формулировками.</p>
-          </div>
-
-          <div className="benefit">
-            <span className="benefit-number">03</span>
-            <span className="benefit-icon">⌘</span>
-            <h3>Критическое мышление</h3>
-            <p>Анализ информации и проверка аргументов.</p>
-          </div>
-        </div>
-
-        <div className="castle-art">
-          <img src={images.castle} alt="Старинный замок на холме" />
-          <div className="castle-label">
-            EXPLORE YOUR MIND
+        <div className="daily-visual">
+          <div className="daily-orbit orbit-one" />
+          <div className="daily-orbit orbit-two" />
+          <div className="daily-symbol">✳</div>
+          <div className="daily-label">
+            <span>EVERY DAY</span>
+            <strong>01</strong>
+            <span>NEW CHALLENGE</span>
           </div>
         </div>
       </section>
 
-      <section className="about-section" id="about">
-        <div className="about-symbol">✳</div>
-        <div>
-          <div className="eyebrow">О SMART MIND</div>
-          <h2>Мышление — это навык.</h2>
-          <p>
-            SMART MIND объединяет образовательные модули,
-            ежедневные задания и систему отслеживания
-            личного прогресса в одной платформе.
-          </p>
+      <section className="principles section" id="about">
+        <div className="eyebrow">THE SMART MIND METHOD</div>
+        <h2>
+          Не просто знать.
+          <br />
+          <em>Уметь понимать.</em>
+        </h2>
+
+        <div className="principle-grid">
+          <article>
+            <span>01 / ANALYZE</span>
+            <h3>Анализировать</h3>
+            <p>
+              Разбирать информацию и замечать детали, которые легко упустить.
+            </p>
+          </article>
+          <article>
+            <span>02 / CONNECT</span>
+            <h3>Устанавливать связи</h3>
+            <p>Видеть закономерности, причины и последствия событий.</p>
+          </article>
+          <article>
+            <span>03 / EXPRESS</span>
+            <h3>Формулировать</h3>
+            <p>Выражать мысли ясно, последовательно и грамотно.</p>
+          </article>
         </div>
-        <Link href="/login" className="about-button">
-          Присоединиться ↗
-        </Link>
+      </section>
+
+      <section className="final-scene">
+        <Image
+          src={images.castle}
+          alt="Замок на холме"
+          fill
+          sizes="100vw"
+          className="castle-image"
+        />
+        <div className="castle-overlay" />
+        <div className="castle-content">
+          <div className="eyebrow">A NEW WAY TO THINK</div>
+          <h2>
+            Начни с вопроса.
+            <br />
+            <em>Продолжи открытием.</em>
+          </h2>
+          <Link href="/login" className="light-btn">
+            Войти в SMART MIND ↗
+          </Link>
+        </div>
+        <span className="castle-caption">SMART MIND · EST. 2026</span>
       </section>
 
       <footer className="footer">
-        <Link href="/" className="brand">
-          <span className="brand-symbol">✳</span>
-          SMART MIND
+        <Link href="/" className="logo">
+          SMART<span>MIND</span>
         </Link>
-        <span>THINK DEEPER. LEARN BETTER.</span>
-        <span>© SMART MIND 2026</span>
+        <p>Платформа развития интеллектуальных навыков.</p>
+        <span>© 2026 SMART MIND</span>
       </footer>
 
       <style jsx global>{`
@@ -276,21 +266,16 @@ export default function Home() {
 
         :root {
           --paper: #eee9dc;
-          --paper-light: #f5f1e8;
-          --olive: #555d3e;
-          --olive-dark: #343a2c;
-          --ink: #302e26;
-          --muted: #777466;
-          --line: rgba(73, 72, 56, .19);
+          --paper-light: #f5f1e7;
+          --ink: #292c24;
+          --olive: #667052;
+          --muted: #858373;
+          --gold: #aa9160;
         }
 
-        * {
-          box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
-        html {
-          scroll-behavior: smooth;
-        }
+        html { scroll-behavior: smooth; }
 
         body {
           margin: 0;
@@ -299,828 +284,512 @@ export default function Home() {
           font-family: 'DM Sans', sans-serif;
         }
 
-        a {
-          color: inherit;
-          text-decoration: none;
-        }
-
-        .site {
-          overflow: hidden;
-          background:
-            radial-gradient(ellipse at 80% 20%, rgba(255,255,255,.4), transparent 40%),
-            var(--paper);
-        }
+        a { color: inherit; text-decoration: none; }
 
         .header {
-          height: 84px;
-          padding: 0 6.5%;
+          height: 86px;
+          padding: 0 7%;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 25px;
-          border-bottom: 1px solid var(--line);
-          position: sticky;
-          top: 0;
-          z-index: 20;
-          background: rgba(238,233,220,.94);
-          backdrop-filter: blur(15px);
-          transition: box-shadow .3s;
+          border-bottom: 1px solid rgba(53,55,43,.13);
         }
 
-        .header-scrolled {
-          box-shadow: 0 8px 30px rgba(40,37,25,.08);
+        .logo {
+          font-family: 'Playfair Display', serif;
+          font-size: 25px;
+          letter-spacing: 1px;
         }
 
-        .brand {
-          display: flex;
-          align-items: center;
-          gap: 11px;
-          font-weight: 700;
-          font-size: 15px;
-          letter-spacing: 2px;
-          white-space: nowrap;
-        }
+        .logo span { color: var(--olive); font-style: italic; }
 
-        .brand-symbol {
-          font-size: 29px;
-          color: var(--olive);
-        }
+        .header nav { display: flex; gap: 36px; }
 
-        .navigation {
-          display: flex;
-          gap: 32px;
-          font-size: 12px;
-          color: #615e52;
-        }
-
-        .navigation a,
-        .login-button {
+        .header nav a {
+          font-size: 11px;
+          color: #68695e;
           transition: color .2s;
         }
 
-        .navigation a:hover,
-        .login-button:hover {
-          color: #9b7947;
+        .header nav a:hover { color: var(--gold); }
+
+        .account {
+          border: 1px solid rgba(41,44,36,.35);
+          padding: 12px 17px;
+          font-size: 11px;
         }
 
-        .header-actions {
-          display: flex;
-          gap: 12px;
-          align-items: center;
-          font-size: 12px;
-        }
-
-        .login-button {
-          padding: 12px 19px;
-          border: 1px solid var(--line);
-        }
-
-        .start-button,
-        .hero-button {
-          background: var(--olive-dark);
-          color: #f6f1e6;
-          padding: 13px 21px;
-          transition: .3s;
-        }
-
-        .start-button:hover,
-        .hero-button:hover {
-          background: #747b56;
-          transform: translateY(-3px);
-        }
-
-        .start-button span {
-          margin-left: 12px;
-        }
+        .account span { margin-left: 12px; }
 
         .hero {
-          min-height: 690px;
-          position: relative;
+          min-height: 650px;
+          padding: 65px 7% 55px;
           display: grid;
-          grid-template-columns: 45% 55%;
-          padding: 65px 7% 85px;
-          border-bottom: 1px solid var(--line);
-        }
-
-        .paper-grid {
-          position: absolute;
-          inset: 0;
-          pointer-events: none;
-          opacity: .17;
-          background-image:
-            linear-gradient(rgba(85,93,62,.15) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(85,93,62,.15) 1px, transparent 1px);
-          background-size: 44px 44px;
-          mask-image: linear-gradient(to right, black, transparent 90%);
-        }
-
-        .hero-copy {
-          position: relative;
-          z-index: 3;
-          padding-top: 38px;
+          grid-template-columns: .9fr 1.1fr;
+          align-items: center;
+          gap: 30px;
+          overflow: hidden;
         }
 
         .eyebrow {
-          display: flex;
-          align-items: center;
-          gap: 12px;
           font-size: 9px;
           letter-spacing: 2.5px;
-          font-weight: 600;
           color: var(--olive);
+          font-weight: 700;
         }
 
-        .eyebrow-line {
+        .eyebrow span {
           display: inline-block;
-          width: 31px;
-          height: 1px;
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
           background: var(--olive);
+          margin-right: 9px;
         }
+
+        h1, h2, h3, p { margin-top: 0; }
 
         .hero h1 {
-          font-family: 'Playfair Display', Georgia, serif;
-          font-size: clamp(54px, 6.1vw, 88px);
+          font-family: 'Playfair Display', serif;
+          font-size: clamp(58px, 7vw, 96px);
           line-height: .99;
           font-weight: 400;
           letter-spacing: -3px;
-          margin: 35px 0 24px;
+          margin: 28px 0;
         }
 
-        .hero h1 em,
-        h2 em {
-          color: var(--olive);
-          font-weight: 400;
-        }
+        h1 em, h2 em { color: var(--olive); font-weight: 400; }
 
-        .hero-description {
-          max-width: 390px;
-          font-size: 14px;
+        .hero-text {
+          max-width: 400px;
+          color: #77766a;
+          font-size: 13px;
           line-height: 1.9;
-          color: var(--muted);
-          margin-bottom: 31px;
         }
 
-        .hero-button {
+        .hero-actions {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 22px;
+          margin-top: 30px;
+        }
+
+        .primary-btn {
           display: inline-flex;
           align-items: center;
-          gap: 27px;
-          font-size: 12px;
-          padding: 17px 23px;
+          gap: 30px;
+          padding: 17px 21px;
+          background: var(--olive);
+          color: white;
+          font-size: 11px;
+          transition: background .25s, transform .25s;
+        }
+
+        .primary-btn:hover {
+          background: #414b36;
+          transform: translateY(-3px);
+        }
+
+        .secondary-btn {
+          font-size: 10px;
+          color: #66675b;
         }
 
         .hero-note {
           display: flex;
-          align-items: center;
-          gap: 12px;
-          margin-top: 85px;
+          justify-content: space-between;
+          max-width: 390px;
+          border-top: 1px solid rgba(41,44,36,.18);
+          padding-top: 16px;
+          margin-top: 65px;
+          color: #999486;
           font-size: 8px;
-          letter-spacing: 2px;
-          color: var(--muted);
-        }
-
-        .hero-note > span:first-child {
-          color: var(--olive);
-        }
-
-        .note-line {
-          height: 1px;
-          width: 45px;
-          background: var(--line);
+          letter-spacing: 1.5px;
         }
 
         .hero-art {
-          min-height: 520px;
           position: relative;
+          min-height: 480px;
           display: flex;
-          justify-content: center;
           align-items: center;
-          isolation: isolate;
+          justify-content: center;
         }
 
-        .art-arch {
+        .art-glow {
           position: absolute;
-          width: 73%;
-          height: 94%;
-          bottom: 0;
-          left: 13%;
-          background: linear-gradient(145deg, #858b68, #4b5438 75%);
-          border-radius: 48% 48% 4px 4px;
-          box-shadow:
-            inset 13px 0 25px rgba(255,255,255,.13),
-            inset -16px 0 30px rgba(0,0,0,.16),
-            22px 25px 55px rgba(47,48,34,.17);
-          z-index: -2;
+          width: 80%;
+          aspect-ratio: 1;
+          background: radial-gradient(circle, #d9d0b9 0%, transparent 70%);
+          border-radius: 50%;
         }
 
-        .art-arch::before {
-          content: "";
-          position: absolute;
-          inset: 14px;
-          border: 1px solid rgba(239,229,202,.32);
-          border-radius: 48% 48% 0 0;
-        }
-
-        .hero-brain {
+        .art-frame {
           position: relative;
-          z-index: 2;
-          width: 95%;
+          width: 100%;
+          height: 480px;
           animation: float 7s ease-in-out infinite;
-          filter: drop-shadow(0 25px 25px rgba(35,32,22,.25));
         }
 
-        .hero-brain img {
-          width: 100%;
-          height: 490px;
+        .hero-image {
           object-fit: contain;
           mix-blend-mode: multiply;
         }
 
-        .art-orbit {
-          position: absolute;
-          border: 1px solid rgba(193,157,95,.75);
-          border-radius: 50%;
-          z-index: 1;
-          pointer-events: none;
-        }
-
-        .orbit-one {
-          width: 112%;
-          height: 39%;
-          transform: rotate(-27deg);
-        }
-
-        .orbit-two {
-          width: 103%;
-          height: 53%;
-          transform: rotate(35deg);
-        }
-
-        .orbit-three {
-          width: 78%;
-          height: 100%;
-          transform: rotate(23deg);
-        }
-
-        .art-moon {
-          position: absolute;
-          top: 4%;
-          right: 5%;
-          width: 61px;
-          height: 61px;
-          border-radius: 50%;
-          background: radial-gradient(circle at 35% 30%, #fff9e9, #c9bea4 70%);
-          box-shadow: 0 10px 35px rgba(70,63,42,.2);
-        }
-
-        .art-botanical {
-          position: absolute;
-          right: -12%;
-          bottom: 1%;
-          width: 42%;
-          z-index: 3;
-          pointer-events: none;
-          filter: drop-shadow(0 8px 9px rgba(0,0,0,.12));
-        }
-
-        .art-botanical img {
-          width: 100%;
-          height: auto;
-        }
-
-        .art-star {
-          position: absolute;
-          color: #b49560;
-          font-size: 24px;
-        }
-
-        .star-one {
-          top: 18%;
-          left: 2%;
-        }
-
-        .star-two {
-          bottom: 17%;
-          right: 3%;
-        }
-
         .art-caption {
           position: absolute;
-          bottom: 3%;
-          left: 0;
-          display: flex;
-          flex-direction: column;
-          gap: 5px;
-          font-size: 7px;
-          letter-spacing: 2px;
-          color: #f2e9d8;
-        }
-
-        .hero-bottom {
-          position: absolute;
-          bottom: 20px;
-          left: 7%;
-          right: 7%;
+          bottom: 0;
+          right: 3%;
+          left: 3%;
           display: flex;
           justify-content: space-between;
+          color: #8a8575;
           font-size: 8px;
           letter-spacing: 2px;
-          color: var(--muted);
         }
 
-        .modules-section {
-          padding: 110px 7%;
+        .art-side {
+          position: absolute;
+          right: -45px;
+          top: 45%;
+          writing-mode: vertical-rl;
+          font-size: 8px;
+          letter-spacing: 3px;
+          color: #a39b88;
         }
+
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-12px); }
+        }
+
+        .ticker {
+          display: flex;
+          justify-content: space-around;
+          align-items: center;
+          gap: 20px;
+          overflow: hidden;
+          white-space: nowrap;
+          background: #657052;
+          color: #f1ecdf;
+          padding: 19px 5%;
+          font-size: 9px;
+          letter-spacing: 3px;
+        }
+
+        .ticker b { color: #c8b58c; }
+
+        .section { padding: 115px 7%; }
 
         .section-heading {
           display: flex;
           align-items: end;
           justify-content: space-between;
-          margin-bottom: 53px;
-          gap: 30px;
+          gap: 35px;
+          margin-bottom: 55px;
         }
 
         h2 {
-          font-family: 'Playfair Display', Georgia, serif;
-          font-size: clamp(40px, 5vw, 64px);
+          font-family: 'Playfair Display', serif;
+          font-size: clamp(42px, 5vw, 65px);
+          line-height: 1.08;
           font-weight: 400;
-          line-height: 1.1;
           letter-spacing: -1.5px;
-          margin: 24px 0 0;
+          margin: 20px 0 0;
         }
 
         .section-heading > p {
           max-width: 320px;
-          font-size: 13px;
+          color: #7e7b6e;
+          font-size: 12px;
           line-height: 1.9;
-          color: var(--muted);
         }
 
         .module-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 19px;
+          gap: 20px;
         }
 
         .module-card {
-          min-width: 0;
-          position: relative;
-          display: flex;
-          flex-direction: column;
-          min-height: 460px;
-          background: linear-gradient(145deg, #f4f0e6, #e5dece);
-          border: 1px solid rgba(89,83,62,.17);
-          overflow: hidden;
-          transition: transform .4s, box-shadow .4s;
+          display: block;
+          background: var(--paper-light);
+          border: 1px solid rgba(41,44,36,.1);
+          transition: transform .3s, box-shadow .3s;
         }
 
         .module-card:hover {
-          transform: translateY(-9px);
-          box-shadow: 0 25px 45px rgba(49,45,30,.12);
+          transform: translateY(-7px);
+          box-shadow: 0 20px 40px rgba(44,43,31,.1);
         }
 
-        .module-top {
-          display: flex;
-          justify-content: space-between;
-          padding: 23px 24px 0;
-          font-size: 9px;
-          letter-spacing: 2px;
-          color: var(--muted);
+        .module-image {
+          height: 290px;
           position: relative;
+          overflow: hidden;
+          background: #e5dfd0;
+        }
+
+        .module-image img {
+          object-fit: contain;
+          padding: 12px;
+          mix-blend-mode: multiply;
+          transition: transform .5s;
+        }
+
+        .module-card:hover .module-image img { transform: scale(1.06); }
+
+        .module-number {
+          position: absolute;
+          top: 17px;
+          left: 18px;
+          font-size: 10px;
+          color: #777565;
           z-index: 2;
         }
 
         .module-arrow {
-          font-size: 22px;
+          position: absolute;
+          right: 16px;
+          top: 12px;
+          font-size: 20px;
           color: var(--olive);
-        }
-
-        .module-art {
-          height: 235px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          padding: 5px 20px;
-          overflow: hidden;
-        }
-
-        .module-art img {
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-          transition: transform .6s;
-          filter: drop-shadow(0 17px 13px rgba(40,35,23,.15));
-        }
-
-        .module-card:hover .module-art img {
-          transform: scale(1.07) translateY(-5px);
-        }
-
-        .module-content {
-          padding: 10px 25px 27px;
-          margin-top: auto;
-        }
-
-        .module-subtitle {
-          color: var(--olive);
-          font-size: 10px;
-          margin-bottom: 9px;
-        }
-
-        .module-content h3 {
-          font-family: 'Playfair Display', Georgia, serif;
-          font-size: 26px;
-          font-weight: 500;
-          letter-spacing: .4px;
-          margin: 0 0 12px;
-        }
-
-        .module-content p {
-          color: var(--muted);
-          font-size: 11px;
-          line-height: 1.8;
-          margin: 0;
-        }
-
-        .daily-section {
-          position: relative;
-          padding: 90px 7% 100px;
-          background: #e4dfd0;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 65px;
-          border-top: 1px solid var(--line);
-          border-bottom: 1px solid var(--line);
-          overflow: hidden;
-        }
-
-        .daily-intro h2 {
-          font-size: clamp(39px, 4.4vw, 57px);
-        }
-
-        .daily-intro > p {
-          max-width: 400px;
-          color: var(--muted);
-          line-height: 1.9;
-          font-size: 12px;
-          margin-top: 25px;
-        }
-
-        .daily-link {
-          display: inline-flex;
-          gap: 25px;
-          align-items: center;
-          margin-top: 17px;
-          padding-bottom: 9px;
-          border-bottom: 1px solid var(--olive);
-          color: var(--olive);
-          font-size: 12px;
-        }
-
-        .benefits {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          position: relative;
           z-index: 2;
         }
 
-        .benefit {
-          position: relative;
-          display: grid;
-          grid-template-columns: 35px 40px 1fr;
-          align-items: center;
-          gap: 12px;
-          padding: 19px 0;
-          border-bottom: 1px solid var(--line);
-        }
+        .module-info { padding: 25px 23px 28px; }
 
-        .benefit-number {
+        .module-subtitle {
           font-size: 9px;
-          color: var(--muted);
-        }
-
-        .benefit-icon {
-          font-size: 25px;
           color: var(--olive);
+          letter-spacing: 1px;
         }
 
-        .benefit h3 {
-          font-family: 'Playfair Display', Georgia, serif;
-          font-weight: 500;
-          font-size: 20px;
-          margin: 0;
+        .module-info h3 {
+          font-family: 'Playfair Display', serif;
+          font-size: 27px;
+          font-weight: 400;
+          margin: 13px 0;
         }
 
-        .benefit p {
-          grid-column: 3;
-          font-size: 10px;
-          color: var(--muted);
-          margin: -8px 0 0;
+        .module-info p {
+          min-height: 58px;
+          color: #828073;
+          font-size: 11px;
+          line-height: 1.7;
         }
 
-        .castle-art {
-          grid-column: 1 / -1;
-          height: 280px;
-          position: relative;
-          margin-top: 5px;
-          overflow: hidden;
-          background: #d5cfbd;
-        }
-
-        .castle-art img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          object-position: center 55%;
-          display: block;
-        }
-
-        .castle-label {
-          position: absolute;
-          bottom: 18px;
-          left: 22px;
+        .module-link {
           font-size: 8px;
-          letter-spacing: 3px;
-          color: white;
-          text-shadow: 0 2px 9px #333;
-        }
-
-        .about-section {
-          padding: 75px 7%;
-          display: grid;
-          grid-template-columns: 70px 1fr auto;
-          align-items: center;
-          gap: 30px;
-        }
-
-        .about-symbol {
-          font-size: 50px;
+          letter-spacing: 1.5px;
           color: var(--olive);
         }
 
-        .about-section h2 {
-          font-size: 37px;
-          margin: 14px 0;
+        .daily {
+          background: #e2ddce;
+          padding: 90px 10%;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          align-items: center;
+          gap: 50px;
+          overflow: hidden;
         }
 
-        .about-section p {
-          max-width: 580px;
+        .daily-content h2 { margin-bottom: 25px; }
+
+        .daily-content > p {
+          max-width: 430px;
           font-size: 12px;
           line-height: 1.9;
-          color: var(--muted);
+          color: #77766a;
+          margin-bottom: 28px;
         }
 
-        .about-button {
-          background: var(--olive-dark);
-          color: white;
-          padding: 17px 22px;
+        .daily-visual {
+          height: 350px;
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .daily-orbit {
+          position: absolute;
+          width: 260px;
+          height: 260px;
+          border: 1px solid rgba(102,112,82,.4);
+          border-radius: 50%;
+        }
+
+        .orbit-two {
+          width: 330px;
+          height: 180px;
+          transform: rotate(-35deg);
+          border-color: rgba(170,145,96,.65);
+        }
+
+        .daily-symbol {
+          font-family: 'Playfair Display', serif;
+          font-size: 105px;
+          color: var(--olive);
+          animation: rotate 25s linear infinite;
+        }
+
+        @keyframes rotate { to { transform: rotate(360deg); } }
+
+        .daily-label {
+          position: absolute;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 8px;
+          font-size: 8px;
+          letter-spacing: 2px;
+          color: #77766a;
+        }
+
+        .daily-label strong {
+          font-family: 'Playfair Display', serif;
+          font-size: 35px;
+          font-weight: 400;
+          color: var(--ink);
+        }
+
+        .principles { text-align: center; }
+
+        .principle-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 35px;
+          margin-top: 70px;
+          text-align: left;
+        }
+
+        .principle-grid article {
+          padding-top: 22px;
+          border-top: 1px solid rgba(41,44,36,.25);
+        }
+
+        .principle-grid article span {
+          color: var(--gold);
+          font-size: 9px;
+          letter-spacing: 1.5px;
+        }
+
+        .principle-grid h3 {
+          font-family: 'Playfair Display', serif;
+          font-weight: 400;
+          font-size: 25px;
+          margin: 25px 0 12px;
+        }
+
+        .principle-grid p {
+          color: #7c796c;
           font-size: 11px;
-          white-space: nowrap;
+          line-height: 1.8;
+        }
+
+        .final-scene {
+          position: relative;
+          min-height: 470px;
+          display: flex;
+          align-items: center;
+          padding: 75px 10%;
+          overflow: hidden;
+          background: #555c46;
+        }
+
+        .castle-image {
+          object-fit: cover;
+          object-position: center 55%;
+          opacity: .55;
+        }
+
+        .castle-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(90deg, rgba(35,40,31,.78), rgba(35,40,31,.12));
+        }
+
+        .castle-content {
+          position: relative;
+          z-index: 2;
+          color: #f3eee2;
+        }
+
+        .castle-content .eyebrow { color: #d0bd92; }
+
+        .castle-content h2 { margin: 25px 0 35px; }
+
+        .castle-content h2 em { color: #d3c29d; }
+
+        .light-btn {
+          display: inline-block;
+          padding: 16px 23px;
+          background: #eee9dc;
+          color: #303529;
+          font-size: 10px;
+        }
+
+        .castle-caption {
+          position: absolute;
+          bottom: 25px;
+          right: 7%;
+          color: #e4ddcc;
+          font-size: 8px;
+          letter-spacing: 2px;
+          z-index: 2;
         }
 
         .footer {
-          border-top: 1px solid var(--line);
-          min-height: 85px;
-          padding: 20px 7%;
+          min-height: 100px;
+          padding: 25px 7%;
           display: flex;
-          align-items: center;
           justify-content: space-between;
+          align-items: center;
           gap: 20px;
         }
 
-        .footer > span {
-          font-size: 8px;
-          letter-spacing: 2px;
-          color: var(--muted);
+        .footer p, .footer > span {
+          font-size: 9px;
+          color: #8a8779;
+          margin: 0;
         }
 
-        @keyframes float {
-          0%, 100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-12px);
-          }
-        }
-
-        @media (max-width: 900px) {
-          .header {
-            padding: 0 4%;
-          }
-
-          .navigation {
-            gap: 14px;
-          }
-
+        @media (max-width: 800px) {
+          .header { height: 72px; padding: 0 5%; }
+          .header nav { display: none; }
           .hero {
-            padding-left: 5%;
-            padding-right: 5%;
-            grid-template-columns: 46% 54%;
-          }
-
-          .hero h1 {
-            font-size: 58px;
-          }
-
-          .modules-section,
-          .daily-section {
-            padding-left: 5%;
-            padding-right: 5%;
-          }
-
-          .module-content {
-            padding-left: 17px;
-            padding-right: 17px;
-          }
-        }
-
-        @media (max-width: 650px) {
-          .header {
-            height: 69px;
-            padding: 0 19px;
-          }
-
-          .brand {
-            font-size: 12px;
-            letter-spacing: 1px;
-          }
-
-          .brand-symbol {
-            font-size: 24px;
-          }
-
-          .navigation {
-            display: none;
-          }
-
-          .header-actions {
-            gap: 7px;
-            font-size: 10px;
-          }
-
-          .login-button {
-            padding: 10px 12px;
-          }
-
-          .start-button {
-            padding: 11px 13px;
-          }
-
-          .hero {
-            display: flex;
-            flex-direction: column;
-            padding: 53px 23px 70px;
-            min-height: auto;
-          }
-
-          .hero-copy {
-            padding-top: 0;
-          }
-
-          .hero h1 {
-            font-size: clamp(49px, 12vw, 68px);
-            margin-top: 27px;
-            letter-spacing: -2px;
-          }
-
-          .hero-description {
-            font-size: 12px;
-            max-width: 310px;
-          }
-
-          .hero-note {
-            margin-top: 33px;
-          }
-
-          .hero-art {
-            min-height: 350px;
-            margin-top: 20px;
-          }
-
-          .hero-brain img {
-            height: 340px;
-          }
-
-          .art-arch {
-            width: 78%;
-            left: 11%;
-          }
-
-          .art-botanical {
-            right: -6%;
-            width: 37%;
-          }
-
-          .art-moon {
-            width: 43px;
-            height: 43px;
-          }
-
-          .hero-bottom {
-            left: 23px;
-            right: 23px;
-            font-size: 6px;
-            letter-spacing: 1px;
-          }
-
-          .modules-section {
-            padding: 75px 21px;
-          }
-
-          .section-heading {
-            display: block;
-            margin-bottom: 32px;
-          }
-
-          h2 {
-            font-size: 43px;
-          }
-
-          .section-heading > p {
-            font-size: 12px;
-            margin-top: 20px;
-          }
-
-          .module-grid {
             grid-template-columns: 1fr;
-            gap: 17px;
+            padding: 55px 7% 35px;
           }
-
-          .module-card {
-            min-height: 410px;
+          .hero h1 { font-size: 66px; }
+          .hero-art { min-height: 330px; }
+          .art-frame { height: 330px; }
+          .art-side { right: 0; }
+          .hero-note { margin-top: 40px; }
+          .section { padding: 75px 6%; }
+          .section-heading { display: block; }
+          .section-heading > p { margin-top: 25px; }
+          .module-grid { grid-template-columns: 1fr; }
+          .module-image { height: 320px; }
+          .daily {
+            grid-template-columns: 1fr;
+            padding: 70px 7%;
+            gap: 10px;
           }
-
-          .module-art {
-            height: 225px;
-          }
-
-          .module-content {
-            padding: 10px 22px 25px;
-          }
-
-          .daily-section {
-            padding: 70px 22px;
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-          }
-
-          .daily-intro h2 {
-            font-size: 40px;
-          }
-
-          .benefit {
-            grid-template-columns: 25px 34px 1fr;
-          }
-
-          .benefit h3 {
-            font-size: 17px;
-          }
-
-          .castle-art {
-            height: 190px;
-            margin-top: 10px;
-          }
-
-          .about-section {
-            padding: 55px 23px;
-            grid-template-columns: 45px 1fr;
-            gap: 14px;
-          }
-
-          .about-symbol {
-            font-size: 35px;
-          }
-
-          .about-section h2 {
-            font-size: 28px;
-          }
-
-          .about-section p {
-            font-size: 11px;
-          }
-
-          .about-button {
-            grid-column: 2;
-            justify-self: start;
-          }
-
-          .footer {
-            padding: 23px;
-            flex-wrap: wrap;
-          }
-
-          .footer > span {
-            font-size: 7px;
-          }
+          .daily-visual { height: 290px; }
+          .principle-grid { grid-template-columns: 1fr; gap: 25px; }
+          .final-scene { min-height: 390px; padding: 60px 7%; }
+          .footer { flex-wrap: wrap; }
         }
 
-        @media (prefers-reduced-motion: reduce) {
-          *, *::before, *::after {
-            animation-duration: .01ms !important;
-            transition-duration: .01ms !important;
-            scroll-behavior: auto !important;
-          }
+        @media (max-width: 420px) {
+          .account { font-size: 9px; padding: 10px; }
+          .hero h1 { font-size: 57px; }
+          .hero-actions { gap: 15px; }
+          .module-image { height: 270px; }
+          .ticker { justify-content: flex-start; }
         }
       `}</style>
     </main>
