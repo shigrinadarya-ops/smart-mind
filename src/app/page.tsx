@@ -3,8 +3,6 @@
 
 import React, { useState } from "react";
 
-const h = React.createElement;
-
 const modules = [
   {
     id: "write",
@@ -83,593 +81,759 @@ export default function HomePage() {
     }
   }
 
-  const button = {
-    background: "rgba(238,239,222,0.12)",
-    border: "1px solid rgba(238,239,222,0.3)",
-    color: "#f0efdf",
-    padding: "13px 22px",
-    borderRadius: "30px",
-    cursor: "pointer",
-    fontSize: "13px",
-    letterSpacing: "0.5px",
-  };
-
-  const glass = {
-    background: "rgba(23,34,24,0.58)",
-    border: "1px solid rgba(223,229,202,0.19)",
-    backdropFilter: "blur(22px)",
-    WebkitBackdropFilter: "blur(22px)",
+  const glass: React.CSSProperties = {
+    background: "rgba(25, 32, 25, 0.65)",
+    border: "1px solid rgba(223, 229, 202, 0.2)",
+    backdropFilter: "blur(20px)",
+    WebkitBackdropFilter: "blur(20px)",
     borderRadius: "22px",
   };
 
-  return h(
-    "div",
-    {
-      style: {
-        minHeight: "100vh",
-        background: "#172119",
-        color: "#f1efdf",
-        fontFamily: "Arial, sans-serif",
-        overflow: "hidden",
-      },
-    },
+  const button: React.CSSProperties = {
+    background: "#e8e2cf",
+    color: "#263126",
+    border: "none",
+    padding: "16px 34px",
+    borderRadius: "40px",
+    cursor: "pointer",
+    fontSize: "12px",
+    fontWeight: 700,
+    letterSpacing: "2px",
+    transition: "all .3s ease",
+  };
 
-    // HERO
+  return (
+    <main className="site">
 
-    h(
-      "section",
-      {
-        style: {
-          minHeight: "690px",
-          height: "95vh",
-          maxHeight: "1000px",
-          position: "relative",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          padding: "28px 6%",
-          boxSizing: "border-box",
+      <style>{`
+        * {
+          box-sizing: border-box;
+        }
+
+        html {
+          scroll-behavior: smooth;
+        }
+
+        body {
+          margin: 0;
+          background: #172119;
+        }
+
+        .site {
+          min-height: 100vh;
+          background: #172119;
+          color: #f1efdf;
+          font-family: Arial, sans-serif;
+          overflow: hidden;
+        }
+
+        /* HERO */
+
+        .hero {
+          position: relative;
+          min-height: 720px;
+          height: 100svh;
+          max-height: 1100px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          padding: 30px 6%;
+          isolation: isolate;
+          overflow: hidden;
+          background: #172119;
+        }
+
+        .hero-art {
+          position: absolute;
+          inset: -5%;
+          z-index: -3;
+          background-image: url("/IMG_6655.jpeg");
+          background-size: cover;
+          background-position: center;
+          animation: paintingZoom 42s ease-in-out infinite alternate;
+          will-change: transform;
+        }
+
+        .hero-shade {
+          position: absolute;
+          inset: 0;
+          z-index: -2;
           background:
-            "linear-gradient(180deg,rgba(12,20,14,.35),rgba(12,20,14,.25) 45%,#172119), linear-gradient(120deg,#536445,#8b9160,#354c3d)",
-        },
-      },
+            linear-gradient(
+              180deg,
+              rgba(15, 20, 14, .48),
+              rgba(15, 20, 14, .12) 42%,
+              rgba(18, 27, 19, .72) 82%,
+              #172119 100%
+            );
+        }
 
-      h(
-        "video",
-        {
-          autoPlay: true,
-          muted: true,
-          loop: true,
-          playsInline: true,
-          "aria-hidden": true,
-          style: {
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            zIndex: 0,
-          },
-        },
-        h("source", {
-          src: "/hero.mp4",
-          type: "video/mp4",
-        })
-      ),
-
-      h("div", {
-        style: {
-          position: "absolute",
-          inset: 0,
+        .fog {
+          position: absolute;
+          inset: -30%;
+          z-index: -1;
+          pointer-events: none;
+          filter: blur(42px);
+          opacity: .75;
           background:
-            "linear-gradient(180deg,rgba(10,18,12,.43),rgba(10,18,12,.12) 40%,#172119 100%)",
-          zIndex: 1,
-        },
-      }),
+            radial-gradient(
+              ellipse at 20% 60%,
+              rgba(229, 226, 205, .35),
+              transparent 42%
+            ),
+            radial-gradient(
+              ellipse at 70% 40%,
+              rgba(207, 218, 192, .27),
+              transparent 44%
+            ),
+            radial-gradient(
+              ellipse at 48% 78%,
+              rgba(229, 221, 200, .23),
+              transparent 38%
+            );
+          animation: fogDrift 34s ease-in-out infinite alternate;
+        }
 
-      h(
-        "nav",
-        {
-          style: {
-            position: "relative",
-            zIndex: 2,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: "15px",
-          },
-        },
-        h(
-          "div",
-          {
-            style: {
-              fontSize: "23px",
-              fontWeight: 800,
-              letterSpacing: "3px",
-            },
-          },
-          "SMART MIND"
-        ),
-        h(
-          "div",
-          {
-            style: {
-              display: "flex",
-              gap: "22px",
-              alignItems: "center",
-              fontSize: "12px",
-              flexWrap: "wrap",
-            },
-          },
-          h("a", {
-            href: "#about",
-            style: { color: "#f1efdf", textDecoration: "none" },
-            children: "О платформе",
-          }),
-          h("a", {
-            href: "#modules",
-            style: { color: "#f1efdf", textDecoration: "none" },
-            children: "Обучение",
-          }),
-          h("a", {
-            href: "#workspace",
-            style: { color: "#f1efdf", textDecoration: "none" },
-            children: "Практика",
-          })
-        )
-      ),
+        .fog-two {
+          opacity: .55;
+          filter: blur(60px);
+          background:
+            radial-gradient(
+              ellipse at 75% 70%,
+              rgba(226, 225, 207, .3),
+              transparent 42%
+            ),
+            radial-gradient(
+              ellipse at 25% 35%,
+              rgba(190, 207, 177, .25),
+              transparent 43%
+            );
+          animation: fogDriftTwo 45s ease-in-out infinite alternate;
+        }
 
-      h(
-        "div",
-        {
-          style: {
-            position: "relative",
-            zIndex: 2,
-            maxWidth: "760px",
-            margin: "auto",
-            textAlign: "center",
-            padding: "40px 0",
-          },
-        },
-        h(
-          "div",
-          {
-            style: {
-              fontSize: "11px",
-              letterSpacing: "4px",
-              color: "#e1dfc8",
-              marginBottom: "25px",
-            },
-          },
-          "A NEW WAY TO THINK"
-        ),
-        h(
-          "h1",
-          {
-            style: {
-              fontSize: "clamp(40px,8vw,82px)",
-              lineHeight: 1.04,
-              letterSpacing: "-3px",
-              fontWeight: 600,
-              margin: "0 0 24px",
-            },
-          },
-          "Думай глубже.",
-          h("br"),
-          "Открывай больше."
-        ),
-        h(
-          "p",
-          {
-            style: {
-              maxWidth: "510px",
-              margin: "0 auto 32px",
-              color: "#e1e1d0",
-              fontSize: "15px",
-              lineHeight: 1.8,
-            },
-          },
-          "Образовательное пространство, где грамотность, логика и критическое мышление становятся навыками будущего."
-        ),
-        h(
-          "button",
-          {
-            onClick: () => setWorkspace(true),
-            style: {
-              ...button,
-              background: "#e7e6d4",
-              color: "#263529",
-              border: "none",
-              padding: "16px 30px",
-              fontWeight: 700,
-            },
-          },
-          "ВОЙТИ В ПРОСТРАНСТВО ↗"
-        )
-      ),
+        .fog-three {
+          opacity: .35;
+          filter: blur(75px);
+          background:
+            radial-gradient(
+              ellipse at 50% 50%,
+              rgba(235, 230, 210, .25),
+              transparent 50%
+            );
+          animation: fogDrift 55s ease-in-out infinite alternate-reverse;
+        }
 
-      h(
-        "div",
-        {
-          style: {
-            position: "relative",
-            zIndex: 2,
-            display: "flex",
-            justifyContent: "space-between",
-            fontSize: "10px",
-            letterSpacing: "2px",
-            color: "#e1dfc8",
-          },
-        },
-        h("span", null, "SMART LEARNING"),
-        h("span", null, "01 — 11 CLASS")
-      )
-    ),
+        @keyframes paintingZoom {
+          from {
+            transform: scale(1);
+          }
+          to {
+            transform: scale(1.14);
+          }
+        }
 
-    // INTRODUCTION
+        @keyframes fogDrift {
+          from {
+            transform: translate(-5%, 2%) scale(1);
+          }
+          to {
+            transform: translate(7%, -4%) scale(1.13);
+          }
+        }
 
-    h(
-      "section",
-      {
-        id: "about",
-        style: {
-          padding: "100px 7%",
-          background: "#172119",
-        },
-      },
-      h(
-        "div",
-        {
-          style: {
-            maxWidth: "1050px",
-            margin: "auto",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))",
-            gap: "45px",
-            alignItems: "center",
-          },
-        },
-        h(
-          "div",
-          null,
-          h(
-            "div",
-            {
-              style: {
-                color: "#aab99a",
-                fontSize: "11px",
-                letterSpacing: "3px",
-                marginBottom: "20px",
-              },
-            },
-            "BEYOND EDUCATION"
-          ),
-          h(
-            "h2",
-            {
-              style: {
-                fontSize: "clamp(30px,5vw,48px)",
-                lineHeight: 1.15,
-                fontWeight: 500,
-                margin: 0,
-              },
-            },
-            "Не просто получать знания. ",
-            h("span", { style: { color: "#a9b996" } }, "Учиться мыслить.")
-          )
-        ),
-        h(
-          "p",
-          {
-            style: {
-              color: "#c0c5b5",
-              lineHeight: 1.9,
-              fontSize: "14px",
-              margin: 0,
-            },
-          },
-          "SMART MIND — интеллектуальная образовательная платформа для школьников. Здесь можно развивать навыки работы с текстом, тренировать логику, анализировать информацию и отслеживать собственный прогресс."
-        )
-      )
-    ),
+        @keyframes fogDriftTwo {
+          from {
+            transform: translate(7%, -3%) scale(1.1);
+          }
+          to {
+            transform: translate(-8%, 5%) scale(1);
+          }
+        }
 
-    // MODULES
+        @keyframes appear {
+          from {
+            opacity: 0;
+            transform: translateY(25px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
 
-    h(
-      "section",
-      {
-        id: "modules",
-        style: {
-          padding: "75px 6%",
-          background: "#202b22",
-        },
-      },
-      h(
-        "div",
-        {
-          style: {
-            maxWidth: "1100px",
-            margin: "auto",
-          },
-        },
-        h(
-          "div",
-          {
-            style: {
-              color: "#aab99a",
-              fontSize: "11px",
-              letterSpacing: "3px",
-            },
-          },
-          "YOUR LEARNING SPACE"
-        ),
-        h(
-          "h2",
-          {
-            style: {
-              fontSize: "clamp(30px,5vw,45px)",
-              fontWeight: 500,
-              margin: "18px 0 38px",
-            },
-          },
-          "Три направления развития"
-        ),
-        h(
-          "div",
-          {
-            style: {
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit,minmax(230px,1fr))",
-              gap: "16px",
-            },
-          },
-          ...modules.map((item) =>
-            h(
-              "button",
-              {
-                key: item.id,
-                onClick: () => {
+        .hero-nav,
+        .hero-bottom,
+        .hero-center {
+          position: relative;
+          z-index: 2;
+        }
+
+        .hero-nav {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 20px;
+          animation: appear 1.4s ease both;
+        }
+
+        .brand {
+          font-size: 19px;
+          font-weight: 700;
+          letter-spacing: 4px;
+        }
+
+        .nav-links {
+          display: flex;
+          align-items: center;
+          gap: 28px;
+        }
+
+        .nav-links a {
+          color: #f1efdf;
+          text-decoration: none;
+          font-size: 12px;
+          letter-spacing: 1px;
+          transition: opacity .3s;
+        }
+
+        .nav-links a:hover {
+          opacity: .65;
+        }
+
+        .hero-center {
+          max-width: 900px;
+          width: 100%;
+          margin: auto;
+          text-align: center;
+          padding: 50px 0;
+          animation: appear 2s ease both;
+        }
+
+        .hero-eyebrow {
+          color: #e6e0c9;
+          font-size: 11px;
+          letter-spacing: 5px;
+          margin-bottom: 25px;
+        }
+
+        .hero-title {
+          margin: 0;
+          font-family: Georgia, serif;
+          font-weight: 400;
+          font-size: clamp(52px, 10vw, 112px);
+          line-height: 1.05;
+          letter-spacing: 5px;
+          color: #f2edda;
+          text-shadow: 0 5px 35px rgba(0,0,0,.25);
+        }
+
+        .hero-description {
+          max-width: 490px;
+          margin: 28px auto 35px;
+          color: #e6e3d4;
+          font-size: 14px;
+          line-height: 1.9;
+          letter-spacing: .4px;
+        }
+
+        .start-button {
+          background: #e8e2cf;
+          color: #293328;
+          border: 1px solid rgba(255,255,255,.35);
+          border-radius: 40px;
+          padding: 17px 48px;
+          font-size: 12px;
+          font-weight: 700;
+          letter-spacing: 3px;
+          cursor: pointer;
+          transition: all .35s ease;
+        }
+
+        .start-button:hover {
+          background: #f4efdf;
+          transform: translateY(-3px);
+          box-shadow: 0 10px 35px rgba(0,0,0,.2);
+        }
+
+        .hero-bottom {
+          display: flex;
+          justify-content: space-between;
+          color: #e1dfc8;
+          font-size: 10px;
+          letter-spacing: 3px;
+        }
+
+        /* ABOUT */
+
+        .about {
+          padding: 110px 7%;
+          background: #172119;
+        }
+
+        .about-inner {
+          max-width: 1050px;
+          margin: auto;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 60px;
+          align-items: center;
+        }
+
+        .eyebrow {
+          color: #aab99a;
+          font-size: 11px;
+          letter-spacing: 3px;
+          margin-bottom: 20px;
+        }
+
+        .section-title {
+          font-size: clamp(30px, 5vw, 48px);
+          line-height: 1.2;
+          font-weight: 400;
+          margin: 0;
+        }
+
+        .about-text {
+          color: #c0c5b5;
+          line-height: 2;
+          font-size: 14px;
+          margin: 0;
+        }
+
+        /* MODULES */
+
+        .modules {
+          padding: 85px 6%;
+          background: #202b22;
+        }
+
+        .section-inner {
+          max-width: 1100px;
+          margin: auto;
+        }
+
+        .module-grid {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 18px;
+        }
+
+        .module-card {
+          text-align: left;
+          padding: 30px 25px;
+          min-height: 220px;
+          color: #f1efdf;
+          cursor: pointer;
+          transition: transform .3s, background .3s;
+        }
+
+        .module-card:hover {
+          transform: translateY(-6px);
+          background: rgba(45, 58, 44, .8);
+        }
+
+        .module-number {
+          font-size: 12px;
+          letter-spacing: 3px;
+          margin-bottom: 42px;
+        }
+
+        .module-title {
+          font-size: 19px;
+          font-weight: 700;
+          margin-bottom: 12px;
+        }
+
+        .module-subtitle {
+          color: #bfc4b6;
+          font-size: 13px;
+          line-height: 1.7;
+        }
+
+        /* WORKSPACE */
+
+        .workspace {
+          padding: 85px 6%;
+          background: #172119;
+        }
+
+        .workspace-panel {
+          padding: 30px;
+          margin-top: 30px;
+        }
+
+        .field-label {
+          display: block;
+          margin-bottom: 12px;
+          font-size: 13px;
+          color: #e1e3d5;
+        }
+
+        .grade-select,
+        .text-input {
+          width: 100%;
+          background: rgba(8,15,10,.7);
+          color: #f1efdf;
+          border: 1px solid #617354;
+          border-radius: 12px;
+          padding: 14px;
+          font: inherit;
+          margin-bottom: 22px;
+        }
+
+        .text-input {
+          resize: vertical;
+          min-height: 170px;
+          line-height: 1.7;
+        }
+
+        .analyze-button {
+          background: #dfe3d0;
+          color: #263529;
+          border: none;
+          padding: 15px 24px;
+          border-radius: 30px;
+          font-weight: 700;
+          letter-spacing: 1px;
+          cursor: pointer;
+        }
+
+        .analyze-button:disabled {
+          opacity: .6;
+          cursor: wait;
+        }
+
+        .error {
+          color: #e5b48c;
+          margin-top: 18px;
+        }
+
+        .result {
+          margin-top: 25px;
+          border-top: 1px solid #52624b;
+          padding-top: 20px;
+          white-space: pre-wrap;
+          line-height: 1.8;
+          color: #e2e5d7;
+        }
+
+        /* FOOTER */
+
+        .footer {
+          background: #111a14;
+          padding: 38px 6%;
+          text-align: center;
+          color: #aab19e;
+          font-size: 11px;
+          letter-spacing: 2px;
+        }
+
+        @media (max-width: 700px) {
+          .hero {
+            min-height: 650px;
+            height: 94svh;
+            padding: 24px 6%;
+          }
+
+          .hero-art {
+            background-position: 55% center;
+          }
+
+          .brand {
+            font-size: 15px;
+            letter-spacing: 2px;
+          }
+
+          .nav-links {
+            gap: 13px;
+          }
+
+          .nav-links a {
+            font-size: 10px;
+          }
+
+          .hero-title {
+            font-size: clamp(42px, 12vw, 72px);
+            letter-spacing: 2px;
+          }
+
+          .hero-description {
+            font-size: 13px;
+            padding: 0 8px;
+          }
+
+          .hero-bottom {
+            font-size: 8px;
+            letter-spacing: 1px;
+          }
+
+          .about {
+            padding: 75px 7%;
+          }
+
+          .about-inner {
+            grid-template-columns: 1fr;
+            gap: 28px;
+          }
+
+          .modules {
+            padding: 70px 6%;
+          }
+
+          .module-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .module-card {
+            min-height: 180px;
+          }
+
+          .workspace {
+            padding: 70px 6%;
+          }
+
+          .workspace-panel {
+            padding: 20px;
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          *,
+          *::before,
+          *::after {
+            animation-duration: .01ms !important;
+            animation-iteration-count: 1 !important;
+            scroll-behavior: auto !important;
+          }
+        }
+      `}</style>
+
+      {/* HERO */}
+
+      <section className="hero" id="top">
+        <div className="hero-art" aria-hidden="true" />
+        <div className="hero-shade" aria-hidden="true" />
+        <div className="fog" aria-hidden="true" />
+        <div className="fog fog-two" aria-hidden="true" />
+        <div className="fog fog-three" aria-hidden="true" />
+
+        <nav className="hero-nav">
+          <div className="brand">SMART MIND</div>
+
+          <div className="nav-links">
+            <a href="#about">О платформе</a>
+            <a href="#modules">Обучение</a>
+            <a href="#workspace">Практика</a>
+          </div>
+        </nav>
+
+        <div className="hero-center">
+          <div className="hero-eyebrow">
+            A NEW WAY TO THINK
+          </div>
+
+          <h1 className="hero-title">
+            SMART MIND
+          </h1>
+
+          <p className="hero-description">
+            Образовательное пространство, где грамотность,
+            логика и критическое мышление становятся
+            навыками будущего.
+          </p>
+
+          <button
+            className="start-button"
+            onClick={() => {
+              setWorkspace(true);
+              setTimeout(() => {
+                document.getElementById("workspace")?.scrollIntoView({
+                  behavior: "smooth",
+                });
+              }, 50);
+            }}
+          >
+            START
+          </button>
+        </div>
+
+        <div className="hero-bottom">
+          <span>SMART LEARNING</span>
+          <span>01 — 11 CLASS</span>
+        </div>
+      </section>
+
+      {/* ABOUT */}
+
+      <section className="about" id="about">
+        <div className="about-inner">
+          <div>
+            <div className="eyebrow">BEYOND EDUCATION</div>
+
+            <h2 className="section-title">
+              Не просто получать знания.{" "}
+              <span style={{ color: "#a9b996" }}>
+                Учиться мыслить.
+              </span>
+            </h2>
+          </div>
+
+          <p className="about-text">
+            SMART MIND — интеллектуальная образовательная
+            платформа для школьников. Здесь можно развивать
+            навыки работы с текстом, тренировать логику,
+            анализировать информацию и отслеживать
+            собственный прогресс.
+          </p>
+        </div>
+      </section>
+
+      {/* MODULES */}
+
+      <section className="modules" id="modules">
+        <div className="section-inner">
+          <div className="eyebrow">YOUR LEARNING SPACE</div>
+
+          <h2 className="section-title" style={{ marginBottom: 40 }}>
+            Три направления развития
+          </h2>
+
+          <div className="module-grid">
+            {modules.map((item) => (
+              <button
+                key={item.id}
+                className="module-card"
+                onClick={() => {
                   setMode(item.id);
                   setWorkspace(true);
-                },
-                style: {
+                  setTimeout(() => {
+                    document.getElementById("workspace")?.scrollIntoView({
+                      behavior: "smooth",
+                    });
+                  }, 50);
+                }}
+                style={{
                   ...glass,
-                  padding: "28px 23px",
-                  textAlign: "left",
-                  cursor: "pointer",
-                  minHeight: "190px",
-                  color: "#f1efdf",
                   borderColor:
-                    mode === item.id ? item.color : "rgba(223,229,202,.19)",
-                },
-              },
-              h(
-                "div",
-                {
-                  style: {
+                    mode === item.id
+                      ? item.color
+                      : "rgba(223,229,202,.19)",
+                }}
+              >
+                <div
+                  className="module-number"
+                  style={{ color: item.color }}
+                >
+                  {item.number}
+                </div>
+
+                <div className="module-title">
+                  {item.title}
+                </div>
+
+                <div className="module-subtitle">
+                  {item.subtitle}
+                </div>
+
+                <div
+                  style={{
+                    marginTop: 20,
                     color: item.color,
-                    fontSize: "12px",
-                    letterSpacing: "2px",
-                    marginBottom: "35px",
-                  },
-                },
-                item.number
-              ),
-              h(
-                "div",
-                {
-                  style: {
-                    fontSize: "19px",
-                    fontWeight: 700,
-                    marginBottom: "12px",
-                  },
-                },
-                item.title
-              ),
-              h(
-                "div",
-                {
-                  style: {
-                    color: "#bfc4b6",
-                    fontSize: "13px",
-                    lineHeight: 1.6,
-                  },
-                },
-                item.subtitle
-              ),
-              h(
-                "div",
-                {
-                  style: {
-                    marginTop: "20px",
-                    color: item.color,
-                    fontSize: "12px",
-                  },
-                },
-                "ОТКРЫТЬ ↗"
-              )
-            )
-          )
-        )
-      )
-    ),
+                    fontSize: 12,
+                    letterSpacing: 1,
+                  }}
+                >
+                  ОТКРЫТЬ ↗
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
 
-    // WORKSPACE
+      {/* WORKSPACE */}
 
-    workspace
-      ? h(
-          "section",
-          {
-            id: "workspace",
-            style: {
-              padding: "80px 6%",
-              background: "#172119",
-            },
-          },
-          h(
-            "div",
-            {
-              style: {
-                maxWidth: "1050px",
-                margin: "auto",
-              },
-            },
-            h(
-              "div",
-              {
-                style: {
-                  color: "#aab99a",
-                  fontSize: "11px",
-                  letterSpacing: "3px",
-                },
-              },
-              "INTERACTIVE LEARNING"
-            ),
-            h(
-              "h2",
-              {
-                style: {
-                  fontSize: "32px",
-                  fontWeight: 500,
-                },
-              },
-              "Твоё образовательное пространство"
-            ),
-            h(
-              "div",
-              {
-                style: {
-                  ...glass,
-                  padding: "25px",
-                },
-              },
-              h(
-                "label",
-                {
-                  style: { display: "block", marginBottom: "12px" },
-                  htmlFor: "grade",
-                },
-                "Выбери класс"
-              ),
-              h(
-                "select",
-                {
-                  id: "grade",
-                  value: grade,
-                  onChange: (e: React.ChangeEvent<HTMLSelectElement>) =>
-                    setGrade(e.target.value),
-                  style: {
-                    background: "#253429",
-                    color: "#f1efdf",
-                    padding: "12px",
-                    border: "1px solid #617354",
-                    borderRadius: "10px",
-                    marginBottom: "20px",
-                  },
-                },
-                ...Array.from({ length: 11 }, (_, i) =>
-                  h(
-                    "option",
-                    { key: i + 1, value: String(i + 1) },
-                    (i + 1) + " класс"
-                  )
-                )
-              ),
-              h(
-                "div",
-                {
-                  style: {
-                    color: active.color,
-                    fontWeight: 700,
-                    marginBottom: "15px",
-                  },
-                },
-                active.title
-              ),
-              h(
-                "form",
-                { onSubmit: analyze },
-                h("textarea", {
-                  value: input,
-                  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                    setInput(e.target.value),
-                  placeholder: "Введи свой текст, рассуждение или утверждение...",
-                  rows: 7,
-                  style: {
-                    display: "block",
-                    width: "100%",
-                    boxSizing: "border-box",
-                    resize: "vertical",
-                    background: "rgba(8,15,10,.7)",
-                    color: "#f1efdf",
-                    border: "1px solid #53664d",
-                    borderRadius: "13px",
-                    padding: "17px",
-                    fontSize: "14px",
-                    lineHeight: 1.7,
-                    marginBottom: "17px",
-                  },
-                }),
-                h(
-                  "button",
-                  {
-                    type: "submit",
-                    disabled: loading,
-                    style: {
-                      ...button,
-                      background: "#dfe3d0",
-                      color: "#263529",
-                      opacity: loading ? 0.6 : 1,
-                    },
-                  },
-                  loading ? "АНАЛИЗИРУЮ..." : "НАЧАТЬ АНАЛИЗ ↗"
-                )
-              ),
-              error
-                ? h(
-                    "p",
-                    { style: { color: "#e5b48c" } },
-                    error
-                  )
-                : null,
-              output
-                ? h(
-                    "div",
-                    {
-                      style: {
-                        marginTop: "25px",
-                        borderTop: "1px solid #52624b",
-                        paddingTop: "20px",
-                        whiteSpace: "pre-wrap",
-                        lineHeight: 1.8,
-                        color: "#e2e5d7",
-                      },
-                    },
-                    h("strong", null, "РАЗБОР НАСТАВНИКА"),
-                    h("p", null, output)
-                  )
-                : null
-            )
-          )
-        )
-      : null,
+      {workspace && (
+        <section className="workspace" id="workspace">
+          <div className="section-inner">
+            <div className="eyebrow">
+              INTERACTIVE LEARNING
+            </div>
 
-    // FOOTER
+            <h2 className="section-title">
+              Твоё образовательное пространство
+            </h2>
 
-    h(
-      "footer",
-      {
-        style: {
-          background: "#111a14",
-          padding: "35px 6%",
-          textAlign: "center",
-          color: "#aab19e",
-          fontSize: "11px",
-          letterSpacing: "2px",
-        },
-      },
-      "SMART MIND © 2026",
-      h("p", null, "THINK DEEPER. LEARN DIFFERENTLY.")
-    )
+            <div className="workspace-panel" style={glass}>
+              <label className="field-label" htmlFor="grade">
+                Выбери класс
+              </label>
+
+              <select
+                id="grade"
+                className="grade-select"
+                value={grade}
+                onChange={(e) => setGrade(e.target.value)}
+                style={{ maxWidth: 250 }}
+              >
+                {Array.from({ length: 11 }, (_, i) => (
+                  <option key={i + 1} value={String(i + 1)}>
+                    {i + 1} класс
+                  </option>
+                ))}
+              </select>
+
+              <div
+                style={{
+                  color: active.color,
+                  fontWeight: 700,
+                  marginBottom: 20,
+                  letterSpacing: 1,
+                }}
+              >
+                {active.title}
+              </div>
+
+              <form onSubmit={analyze}>
+                <textarea
+                  className="text-input"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Введи свой текст, рассуждение или утверждение..."
+                  rows={7}
+                />
+
+                <button
+                  className="analyze-button"
+                  type="submit"
+                  disabled={loading}
+                >
+                  {loading ? "АНАЛИЗИРУЮ..." : "НАЧАТЬ АНАЛИЗ ↗"}
+                </button>
+              </form>
+
+              {error && (
+                <p className="error">{error}</p>
+              )}
+
+              {output && (
+                <div className="result">
+                  <strong>РАЗБОР НАСТАВНИКА</strong>
+                  <p>{output}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* FOOTER */}
+
+      <footer className="footer">
+        SMART MIND © 2026
+        <p>THINK DEEPER. LEARN DIFFERENTLY.</p>
+      </footer>
+
+    </main>
   );
 }
