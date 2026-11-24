@@ -16,8 +16,8 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
     setLoading(true);
     setMessage("");
 
@@ -39,7 +39,7 @@ export default function LoginPage() {
           return;
         }
 
-        setMessage("Регистрация создана. Проверь почту и подтверди адрес.");
+        setMessage("Проверь почту и подтверди регистрацию.");
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email,
@@ -53,9 +53,7 @@ export default function LoginPage() {
       }
     } catch (error) {
       setMessage(
-        error instanceof Error
-          ? error.message
-          : "Не удалось выполнить операцию."
+        error instanceof Error ? error.message : "Произошла ошибка."
       );
     } finally {
       setLoading(false);
@@ -63,29 +61,29 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-[#172119] px-5 py-12 text-[#eee9d8]">
-      <div className="w-full max-w-md rounded-2xl border border-[#78836c]/40 bg-[#202d23] p-7 shadow-2xl">
+    <main className="min-h-screen flex items-center justify-center bg-[#172119] px-5 py-10 text-[#eee9d8]">
+      <div className="w-full max-w-md rounded-2xl border border-[#78836c]/40 bg-[#26372b] p-7">
         <a href="/" className="text-sm tracking-[0.3em] text-[#c6cba9]">
           SMART MIND
         </a>
 
         <h1 className="mt-8 text-3xl font-serif">
-          {mode === "login" ? "С возвращением" : "Создать аккаунт"}
+          {mode === "login" ? "Вход в аккаунт" : "Регистрация"}
         </h1>
 
         <p className="mt-2 text-sm text-[#b9c0ad]">
           {mode === "login"
-            ? "Войди, чтобы продолжить обучение."
-            : "Создай аккаунт SMART MIND."}
+            ? "Продолжи работу в SMART MIND."
+            : "Создай личный аккаунт ученика."}
         </p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">
           {mode === "register" && (
             <input
               type="text"
-              placeholder="Имя"
+              placeholder="Имя и фамилия"
               value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
+              onChange={(event) => setFullName(event.target.value)}
               required
               className="w-full rounded-lg border border-[#697b65] bg-[#172119] p-3 outline-none"
             />
@@ -95,16 +93,16 @@ export default function LoginPage() {
             type="email"
             placeholder="Электронная почта"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(event) => setEmail(event.target.value)}
             required
             className="w-full rounded-lg border border-[#697b65] bg-[#172119] p-3 outline-none"
           />
 
           <input
             type="password"
-            placeholder="Пароль (не менее 6 символов)"
+            placeholder="Пароль"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(event) => setPassword(event.target.value)}
             minLength={6}
             required
             className="w-full rounded-lg border border-[#697b65] bg-[#172119] p-3 outline-none"
