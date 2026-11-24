@@ -3,62 +3,59 @@
 
 import React, { useState } from "react";
 
-type Mode = "write" | "think" | "check";
+const h = React.createElement;
 
-const modes = [
+const modules = [
   {
-    id: "write" as Mode,
+    id: "write",
     number: "01",
-    name: "SMART WRITE",
-    description: "Работа с текстом, речью и грамотностью",
-    color: "#a3d9b8",
+    title: "SMART WRITE",
+    subtitle: "Грамотность и работа с текстом",
+    color: "#c9d8b6",
   },
   {
-    id: "think" as Mode,
+    id: "think",
     number: "02",
-    name: "SMART THINK",
-    description: "Логика, мышление и анализ информации",
-    color: "#b5c9ed",
+    title: "SMART THINK",
+    subtitle: "Логика и развитие мышления",
+    color: "#c5d2d9",
   },
   {
-    id: "check" as Mode,
+    id: "check",
     number: "03",
-    name: "SMART CHECK",
-    description: "Факты, аргументы и критическая оценка",
-    color: "#dfc49e",
+    title: "SMART CHECK",
+    subtitle: "Критическое мышление и анализ",
+    color: "#d8c6a5",
   },
 ];
 
-const h = React.createElement;
-
 export default function HomePage() {
+  const [mode, setMode] = useState("write");
   const [grade, setGrade] = useState("11");
-  const [mode, setMode] = useState<Mode>("write");
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [workspace, setWorkspace] = useState(false);
 
-  const active = modes.find((m) => m.id === mode)!;
+  const active = modules.find((m) => m.id === mode)!;
 
-  async function submit(e: React.FormEvent<HTMLFormElement>) {
+  async function analyze(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
     setOutput("");
 
     if (!input.trim()) {
-      setError("Сначала введи текст для анализа.");
+      setError("Добавь текст для анализа.");
       return;
     }
 
     setLoading(true);
 
     try {
-      const response = await fetch("/api/mentor", {
+      const res = await fetch("/api/mentor", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           prompt: input,
           grade: grade + " класс",
@@ -66,9 +63,9 @@ export default function HomePage() {
         }),
       });
 
-      const data = await response.json();
+      const data = await res.json();
 
-      if (!response.ok) {
+      if (!res.ok) {
         throw new Error(data.error || "Ошибка сервера.");
       }
 
@@ -79,435 +76,600 @@ export default function HomePage() {
       setOutput(data.reply);
     } catch (err) {
       setError(
-        err instanceof Error
-          ? err.message
-          : "Не удалось подключиться к серверу."
+        err instanceof Error ? err.message : "Ошибка соединения."
       );
     } finally {
       setLoading(false);
     }
   }
 
-  const pageStyle = {
-    minHeight: "100vh",
-    background: "#090d0b",
-    color: "#ede7da",
-    padding: "30px 18px",
-    fontFamily: "Arial, sans-serif",
-  };
-
-  const containerStyle = {
-    maxWidth: "1050px",
-    margin: "0 auto",
-  };
-
-  const panelStyle = {
-    background: "#101713",
-    border: "1px solid #244333",
-    borderRadius: "20px",
-    padding: "22px",
-  };
-
-  const buttonStyle = {
-    background: "linear-gradient(120deg,#1d7558,#0e3c2d)",
-    color: "#ffffff",
-    border: "none",
-    borderRadius: "12px",
-    padding: "15px 20px",
-    fontSize: "14px",
-    fontWeight: 700,
+  const button = {
+    background: "rgba(238,239,222,0.12)",
+    border: "1px solid rgba(238,239,222,0.3)",
+    color: "#f0efdf",
+    padding: "13px 22px",
+    borderRadius: "30px",
     cursor: "pointer",
+    fontSize: "13px",
+    letterSpacing: "0.5px",
+  };
+
+  const glass = {
+    background: "rgba(23,34,24,0.58)",
+    border: "1px solid rgba(223,229,202,0.19)",
+    backdropFilter: "blur(22px)",
+    WebkitBackdropFilter: "blur(22px)",
+    borderRadius: "22px",
   };
 
   return h(
     "div",
-    { style: pageStyle },
+    {
+      style: {
+        minHeight: "100vh",
+        background: "#172119",
+        color: "#f1efdf",
+        fontFamily: "Arial, sans-serif",
+        overflow: "hidden",
+      },
+    },
+
+    // HERO
+
     h(
-      "div",
-      { style: containerStyle },
+      "section",
+      {
+        style: {
+          minHeight: "690px",
+          height: "95vh",
+          maxHeight: "1000px",
+          position: "relative",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          padding: "28px 6%",
+          boxSizing: "border-box",
+          background:
+            "linear-gradient(180deg,rgba(12,20,14,.35),rgba(12,20,14,.25) 45%,#172119), linear-gradient(120deg,#536445,#8b9160,#354c3d)",
+        },
+      },
 
       h(
-        "header",
+        "video",
+        {
+          autoPlay: true,
+          muted: true,
+          loop: true,
+          playsInline: true,
+          "aria-hidden": true,
+          style: {
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            zIndex: 0,
+          },
+        },
+        h("source", {
+          src: "/hero.mp4",
+          type: "video/mp4",
+        })
+      ),
+
+      h("div", {
+        style: {
+          position: "absolute",
+          inset: 0,
+          background:
+            "linear-gradient(180deg,rgba(10,18,12,.43),rgba(10,18,12,.12) 40%,#172119 100%)",
+          zIndex: 1,
+        },
+      }),
+
+      h(
+        "nav",
         {
           style: {
-            ...panelStyle,
-            marginBottom: "20px",
-            padding: "30px",
+            position: "relative",
+            zIndex: 2,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "15px",
           },
         },
         h(
           "div",
           {
             style: {
-              color: "#a3d9b8",
-              fontSize: "12px",
-              letterSpacing: "2px",
-              marginBottom: "18px",
+              fontSize: "23px",
+              fontWeight: 800,
+              letterSpacing: "3px",
             },
           },
-          "SMART MIND  /  EDUCATIONAL PLATFORM"
+          "SMART MIND"
+        ),
+        h(
+          "div",
+          {
+            style: {
+              display: "flex",
+              gap: "22px",
+              alignItems: "center",
+              fontSize: "12px",
+              flexWrap: "wrap",
+            },
+          },
+          h("a", {
+            href: "#about",
+            style: { color: "#f1efdf", textDecoration: "none" },
+            children: "О платформе",
+          }),
+          h("a", {
+            href: "#modules",
+            style: { color: "#f1efdf", textDecoration: "none" },
+            children: "Обучение",
+          }),
+          h("a", {
+            href: "#workspace",
+            style: { color: "#f1efdf", textDecoration: "none" },
+            children: "Практика",
+          })
+        )
+      ),
+
+      h(
+        "div",
+        {
+          style: {
+            position: "relative",
+            zIndex: 2,
+            maxWidth: "760px",
+            margin: "auto",
+            textAlign: "center",
+            padding: "40px 0",
+          },
+        },
+        h(
+          "div",
+          {
+            style: {
+              fontSize: "11px",
+              letterSpacing: "4px",
+              color: "#e1dfc8",
+              marginBottom: "25px",
+            },
+          },
+          "A NEW WAY TO THINK"
         ),
         h(
           "h1",
           {
             style: {
-              fontSize: "clamp(30px,5vw,48px)",
-              lineHeight: 1.15,
-              margin: "0 0 15px",
-              fontWeight: 800,
+              fontSize: "clamp(40px,8vw,82px)",
+              lineHeight: 1.04,
+              letterSpacing: "-3px",
+              fontWeight: 600,
+              margin: "0 0 24px",
             },
           },
-          "Пространство, куда заходят думать"
+          "Думай глубже.",
+          h("br"),
+          "Открывай больше."
         ),
         h(
           "p",
           {
             style: {
-              color: "#aaa99e",
+              maxWidth: "510px",
+              margin: "0 auto 32px",
+              color: "#e1e1d0",
               fontSize: "15px",
-              lineHeight: 1.7,
-              maxWidth: "650px",
+              lineHeight: 1.8,
             },
           },
-          "Интеллектуальная платформа для развития грамотности, логического и критического мышления школьников."
+          "Образовательное пространство, где грамотность, логика и критическое мышление становятся навыками будущего."
         ),
+        h(
+          "button",
+          {
+            onClick: () => setWorkspace(true),
+            style: {
+              ...button,
+              background: "#e7e6d4",
+              color: "#263529",
+              border: "none",
+              padding: "16px 30px",
+              fontWeight: 700,
+            },
+          },
+          "ВОЙТИ В ПРОСТРАНСТВО ↗"
+        )
+      ),
+
+      h(
+        "div",
+        {
+          style: {
+            position: "relative",
+            zIndex: 2,
+            display: "flex",
+            justifyContent: "space-between",
+            fontSize: "10px",
+            letterSpacing: "2px",
+            color: "#e1dfc8",
+          },
+        },
+        h("span", null, "SMART LEARNING"),
+        h("span", null, "01 — 11 CLASS")
+      )
+    ),
+
+    // INTRODUCTION
+
+    h(
+      "section",
+      {
+        id: "about",
+        style: {
+          padding: "100px 7%",
+          background: "#172119",
+        },
+      },
+      h(
+        "div",
+        {
+          style: {
+            maxWidth: "1050px",
+            margin: "auto",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))",
+            gap: "45px",
+            alignItems: "center",
+          },
+        },
         h(
           "div",
-          {
-            style: {
-              marginTop: "22px",
-              color: "#a3d9b8",
-              fontSize: "12px",
-            },
-          },
-          "1–11 КЛАССЫ  •  SMART LEARNING  •  AI MENTOR"
-        )
-      ),
-
-      h(
-        "section",
-        {
-          style: {
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
-            gap: "12px",
-            marginBottom: "18px",
-          },
-        },
-        h(
-          "label",
-          {
-            htmlFor: "grade",
-            style: { color: "#aaa99e", fontSize: "13px" },
-          },
-          "ТВОЙ КЛАСС"
-        ),
-        h(
-          "select",
-          {
-            id: "grade",
-            value: grade,
-            onChange: (e: React.ChangeEvent<HTMLSelectElement>) =>
-              setGrade(e.target.value),
-            style: {
-              background: "#101713",
-              color: "#a3d9b8",
-              border: "1px solid #315b42",
-              borderRadius: "10px",
-              padding: "11px 18px",
-              fontSize: "14px",
-            },
-          },
-          ...Array.from({ length: 11 }, (_, i) =>
-            h(
-              "option",
-              { key: i + 1, value: String(i + 1) },
-              i + 1 + " класс"
-            )
-          )
-        )
-      ),
-
-      h(
-        "section",
-        {
-          style: {
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))",
-            gap: "12px",
-            marginBottom: "22px",
-          },
-        },
-        ...modes.map((item) =>
-          h(
-            "button",
-            {
-              key: item.id,
-              type: "button",
-              onClick: () => {
-                setMode(item.id);
-                setError("");
-              },
-              style: {
-                ...panelStyle,
-                textAlign: "left" as const,
-                cursor: "pointer",
-                borderColor:
-                  mode === item.id ? item.color : "#244333",
-                borderWidth: mode === item.id ? "2px" : "1px",
-              },
-            },
-            h(
-              "div",
-              {
-                style: {
-                  color: item.color,
-                  fontSize: "12px",
-                  marginBottom: "12px",
-                  letterSpacing: "1px",
-                },
-              },
-              item.number
-            ),
-            h(
-              "div",
-              {
-                style: {
-                  fontSize: "16px",
-                  fontWeight: 800,
-                  marginBottom: "10px",
-                },
-              },
-              item.name
-            ),
-            h(
-              "div",
-              {
-                style: {
-                  color: "#aaa99e",
-                  fontSize: "13px",
-                  lineHeight: 1.5,
-                },
-              },
-              item.description
-            ),
-            h(
-              "div",
-              {
-                style: {
-                  marginTop: "15px",
-                  color: item.color,
-                  fontSize: "11px",
-                },
-              },
-              mode === item.id ? "● ВЫБРАНО" : "ОТКРЫТЬ РЕЖИМ"
-            )
-          )
-        )
-      ),
-
-      h(
-        "main",
-        {
-          style: {
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,320px),1fr))",
-            gap: "18px",
-          },
-        },
-
-        h(
-          "form",
-          {
-            onSubmit: submit,
-            style: {
-              ...panelStyle,
-              display: "flex",
-              flexDirection: "column" as const,
-              gap: "16px",
-            },
-          },
+          null,
           h(
             "div",
             {
               style: {
-                color: active.color,
-                fontSize: "12px",
-                fontWeight: 700,
-                letterSpacing: "1px",
-              },
-            },
-            active.name + " / ТВОЙ МАТЕРИАЛ"
-          ),
-          h(
-            "textarea",
-            {
-              value: input,
-              onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                setInput(e.target.value),
-              placeholder:
-                "Напиши текст, рассуждение, аргумент или вопрос...",
-              rows: 10,
-              style: {
-                width: "100%",
-                boxSizing: "border-box" as const,
-                background: "#090d0b",
-                color: "#ede7da",
-                border: "1px solid #31513e",
-                borderRadius: "13px",
-                padding: "16px",
-                fontSize: "14px",
-                lineHeight: 1.7,
-                resize: "vertical" as const,
-                outline: "none",
-              },
-            }
-          ),
-          h(
-            "div",
-            {
-              style: {
-                display: "flex",
-                justifyContent: "space-between",
-                color: "#99998f",
+                color: "#aab99a",
                 fontSize: "11px",
+                letterSpacing: "3px",
+                marginBottom: "20px",
               },
             },
-            h("span", null, grade + " класс"),
-            h("span", null, input.length + " символов")
-          ),
-          error
-            ? h(
-                "div",
-                {
-                  style: {
-                    color: "#f0bd88",
-                    background: "#382719",
-                    padding: "12px",
-                    borderRadius: "10px",
-                    fontSize: "13px",
-                  },
-                },
-                error
-              )
-            : null,
-          h(
-            "button",
-            {
-              type: "submit",
-              disabled: loading,
-              style: {
-                ...buttonStyle,
-                opacity: loading ? 0.6 : 1,
-              },
-            },
-            loading ? "АНАЛИЗИРУЮ..." : "РАЗОБРАТЬ МЫСЛЬ"
-          ),
-          h(
-            "button",
-            {
-              type: "button",
-              onClick: () => {
-                setInput("");
-                setOutput("");
-                setError("");
-              },
-              style: {
-                background: "transparent",
-                color: "#aaa99e",
-                border: "1px solid #31513e",
-                borderRadius: "12px",
-                padding: "12px",
-                cursor: "pointer",
-              },
-            },
-            "Очистить"
-          )
-        ),
-
-        h(
-          "section",
-          {
-            style: {
-              ...panelStyle,
-              minHeight: "350px",
-              display: "flex",
-              flexDirection: "column" as const,
-            },
-          },
-          h(
-            "div",
-            {
-              style: {
-                color: active.color,
-                fontSize: "12px",
-                letterSpacing: "1px",
-                marginBottom: "14px",
-                fontWeight: 700,
-              },
-            },
-            "ОТВЕТ AI-НАСТАВНИКА"
+            "BEYOND EDUCATION"
           ),
           h(
             "h2",
             {
               style: {
-                fontSize: "19px",
-                margin: "0 0 20px",
+                fontSize: "clamp(30px,5vw,48px)",
+                lineHeight: 1.15,
+                fontWeight: 500,
+                margin: 0,
               },
             },
-            active.name
-          ),
-          h(
-            "div",
-            {
-              style: {
-                borderTop: "1px solid #31513e",
-                paddingTop: "20px",
-                color: "#d4d0c5",
-                fontSize: "14px",
-                lineHeight: 1.8,
-                whiteSpace: "pre-wrap" as const,
-                overflowWrap: "anywhere" as const,
-                flex: 1,
-              },
-            },
-            loading
-              ? "Наставник анализирует материал. Подожди немного..."
-              : output ||
-                "Здесь появится подробный анализ твоего материала, сильные стороны, ошибки и рекомендации."
-          ),
-          h(
-            "div",
-            {
-              style: {
-                borderTop: "1px solid #31513e",
-                marginTop: "20px",
-                paddingTop: "15px",
-                color: "#a3d9b8",
-                fontSize: "11px",
-                letterSpacing: "1px",
-              },
-            },
-            "SMART MIND • ГЛУБИНА ВМЕСТО ШАБЛОНОВ"
+            "Не просто получать знания. ",
+            h("span", { style: { color: "#a9b996" } }, "Учиться мыслить.")
           )
+        ),
+        h(
+          "p",
+          {
+            style: {
+              color: "#c0c5b5",
+              lineHeight: 1.9,
+              fontSize: "14px",
+              margin: 0,
+            },
+          },
+          "SMART MIND — интеллектуальная образовательная платформа для школьников. Здесь можно развивать навыки работы с текстом, тренировать логику, анализировать информацию и отслеживать собственный прогресс."
         )
-      ),
+      )
+    ),
 
+    // MODULES
+
+    h(
+      "section",
+      {
+        id: "modules",
+        style: {
+          padding: "75px 6%",
+          background: "#202b22",
+        },
+      },
       h(
-        "footer",
+        "div",
         {
           style: {
-            textAlign: "center" as const,
-            color: "#777d73",
-            fontSize: "11px",
-            padding: "35px 10px 10px",
+            maxWidth: "1100px",
+            margin: "auto",
           },
         },
-        "SMART MIND © 2026 — ПЛАТФОРМА РАЗВИТИЯ МЫШЛЕНИЯ"
+        h(
+          "div",
+          {
+            style: {
+              color: "#aab99a",
+              fontSize: "11px",
+              letterSpacing: "3px",
+            },
+          },
+          "YOUR LEARNING SPACE"
+        ),
+        h(
+          "h2",
+          {
+            style: {
+              fontSize: "clamp(30px,5vw,45px)",
+              fontWeight: 500,
+              margin: "18px 0 38px",
+            },
+          },
+          "Три направления развития"
+        ),
+        h(
+          "div",
+          {
+            style: {
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit,minmax(230px,1fr))",
+              gap: "16px",
+            },
+          },
+          ...modules.map((item) =>
+            h(
+              "button",
+              {
+                key: item.id,
+                onClick: () => {
+                  setMode(item.id);
+                  setWorkspace(true);
+                },
+                style: {
+                  ...glass,
+                  padding: "28px 23px",
+                  textAlign: "left",
+                  cursor: "pointer",
+                  minHeight: "190px",
+                  color: "#f1efdf",
+                  borderColor:
+                    mode === item.id ? item.color : "rgba(223,229,202,.19)",
+                },
+              },
+              h(
+                "div",
+                {
+                  style: {
+                    color: item.color,
+                    fontSize: "12px",
+                    letterSpacing: "2px",
+                    marginBottom: "35px",
+                  },
+                },
+                item.number
+              ),
+              h(
+                "div",
+                {
+                  style: {
+                    fontSize: "19px",
+                    fontWeight: 700,
+                    marginBottom: "12px",
+                  },
+                },
+                item.title
+              ),
+              h(
+                "div",
+                {
+                  style: {
+                    color: "#bfc4b6",
+                    fontSize: "13px",
+                    lineHeight: 1.6,
+                  },
+                },
+                item.subtitle
+              ),
+              h(
+                "div",
+                {
+                  style: {
+                    marginTop: "20px",
+                    color: item.color,
+                    fontSize: "12px",
+                  },
+                },
+                "ОТКРЫТЬ ↗"
+              )
+            )
+          )
+        )
       )
+    ),
+
+    // WORKSPACE
+
+    workspace
+      ? h(
+          "section",
+          {
+            id: "workspace",
+            style: {
+              padding: "80px 6%",
+              background: "#172119",
+            },
+          },
+          h(
+            "div",
+            {
+              style: {
+                maxWidth: "1050px",
+                margin: "auto",
+              },
+            },
+            h(
+              "div",
+              {
+                style: {
+                  color: "#aab99a",
+                  fontSize: "11px",
+                  letterSpacing: "3px",
+                },
+              },
+              "INTERACTIVE LEARNING"
+            ),
+            h(
+              "h2",
+              {
+                style: {
+                  fontSize: "32px",
+                  fontWeight: 500,
+                },
+              },
+              "Твоё образовательное пространство"
+            ),
+            h(
+              "div",
+              {
+                style: {
+                  ...glass,
+                  padding: "25px",
+                },
+              },
+              h(
+                "label",
+                {
+                  style: { display: "block", marginBottom: "12px" },
+                  htmlFor: "grade",
+                },
+                "Выбери класс"
+              ),
+              h(
+                "select",
+                {
+                  id: "grade",
+                  value: grade,
+                  onChange: (e: React.ChangeEvent<HTMLSelectElement>) =>
+                    setGrade(e.target.value),
+                  style: {
+                    background: "#253429",
+                    color: "#f1efdf",
+                    padding: "12px",
+                    border: "1px solid #617354",
+                    borderRadius: "10px",
+                    marginBottom: "20px",
+                  },
+                },
+                ...Array.from({ length: 11 }, (_, i) =>
+                  h(
+                    "option",
+                    { key: i + 1, value: String(i + 1) },
+                    (i + 1) + " класс"
+                  )
+                )
+              ),
+              h(
+                "div",
+                {
+                  style: {
+                    color: active.color,
+                    fontWeight: 700,
+                    marginBottom: "15px",
+                  },
+                },
+                active.title
+              ),
+              h(
+                "form",
+                { onSubmit: analyze },
+                h("textarea", {
+                  value: input,
+                  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                    setInput(e.target.value),
+                  placeholder: "Введи свой текст, рассуждение или утверждение...",
+                  rows: 7,
+                  style: {
+                    display: "block",
+                    width: "100%",
+                    boxSizing: "border-box",
+                    resize: "vertical",
+                    background: "rgba(8,15,10,.7)",
+                    color: "#f1efdf",
+                    border: "1px solid #53664d",
+                    borderRadius: "13px",
+                    padding: "17px",
+                    fontSize: "14px",
+                    lineHeight: 1.7,
+                    marginBottom: "17px",
+                  },
+                }),
+                h(
+                  "button",
+                  {
+                    type: "submit",
+                    disabled: loading,
+                    style: {
+                      ...button,
+                      background: "#dfe3d0",
+                      color: "#263529",
+                      opacity: loading ? 0.6 : 1,
+                    },
+                  },
+                  loading ? "АНАЛИЗИРУЮ..." : "НАЧАТЬ АНАЛИЗ ↗"
+                )
+              ),
+              error
+                ? h(
+                    "p",
+                    { style: { color: "#e5b48c" } },
+                    error
+                  )
+                : null,
+              output
+                ? h(
+                    "div",
+                    {
+                      style: {
+                        marginTop: "25px",
+                        borderTop: "1px solid #52624b",
+                        paddingTop: "20px",
+                        whiteSpace: "pre-wrap",
+                        lineHeight: 1.8,
+                        color: "#e2e5d7",
+                      },
+                    },
+                    h("strong", null, "РАЗБОР НАСТАВНИКА"),
+                    h("p", null, output)
+                  )
+                : null
+            )
+          )
+        )
+      : null,
+
+    // FOOTER
+
+    h(
+      "footer",
+      {
+        style: {
+          background: "#111a14",
+          padding: "35px 6%",
+          textAlign: "center",
+          color: "#aab19e",
+          fontSize: "11px",
+          letterSpacing: "2px",
+        },
+      },
+      "SMART MIND © 2026",
+      h("p", null, "THINK DEEPER. LEARN DIFFERENTLY.")
     )
   );
 }
