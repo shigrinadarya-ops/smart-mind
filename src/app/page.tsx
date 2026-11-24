@@ -1,6 +1,7 @@
+
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 
 type ModeId = "write" | "think" | "check";
 
@@ -18,54 +19,54 @@ const MODES: ModeItem[] = [
     code: "01",
     title: "SMART WRITE",
     subtitle: "Речь, структура и выразительность текста",
-    sample:
-      "Сильный текст начинается не со сложных слов, а с ясной мысли. Когда автор сам выстраивает переходы между идеями, читатель чувствует уверенность и логику.",
+    sample: "Сильный текст начинается не со сложных слов, а с ясной мысли. Когда автор сам выстраивает переходы между идеями, читатель чувствует уверенность и логику.",
   },
   {
     id: "think",
     code: "02",
     title: "SMART THINK",
     subtitle: "Логика, связь причин и следствий",
-    sample:
-      "Если мы повторяем шаблон без понимания, почему он работает, любая новая деталь сбивает с толку. Настоящее понимание проверяется на изменённом условии.",
+    sample: "Если мы повторяем шаблон без понимания, почему он работает, любая новая деталь сбивает с толку. Настоящее понимание проверяется на изменённом условии.",
   },
   {
     id: "check",
     code: "03",
     title: "SMART CHECK",
     subtitle: "Факты, источники и проверка доводов",
-    sample:
-      "Утверждение кажется убедительным, когда звучит уверенно и опирается на популярный миф — но важно отделить проверяемый факт от красивой формулировки.",
+    sample: "Утверждение кажется убедительным, когда звучит уверенно и опирается на популярный миф — но важно отделить проверяемый факт от красивой формулировки.",
   },
 ];
 
-const GRADES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+const GRADES = Array.from({ length: 11 }, (_, i) => i + 1);
 
 export default function HomePage() {
-  const [grade, setGrade] = useState<number>(11);
+  const [grade, setGrade] = useState(11);
   const [mode, setMode] = useState<ModeId>("write");
-  const [input, setInput] = useState<string>("");
-  const [output, setOutput] = useState<string>("");
-  const [error, setError] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
+  const [input, setInput] = useState("");
+  const [output, setOutput] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const activeMode = MODES.find((m) => m.id === mode) || MODES[0];
+  const activeMode = MODES.find((m) => m.id === mode) ?? MODES[0];
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
     setOutput("");
 
     if (!input.trim()) {
-      setError("Напиши черновик, рассуждение или тезис — наставнику нужен текст для разбора.");
+      setError("Напиши текст, рассуждение или тезис для разбора.");
       return;
     }
 
     setLoading(true);
+
     try {
       const res = await fetch("/api/mentor", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           prompt: input,
           grade: `${grade} класс`,
@@ -74,13 +75,22 @@ export default function HomePage() {
       });
 
       const data = await res.json();
+
       if (!res.ok) {
-        setError(data.error || "Не удалось получить разбор.");
-      } else {
-        setOutput(data.reply);
+        throw new Error(data.error || "Не удалось получить разбор.");
       }
-    } catch {
-      setError("Ошибка сети. Проверь подключение и попробуй снова.");
+
+      if (typeof data.reply !== "string") {
+        throw new Error("Сервер вернул некорректный ответ.");
+      }
+
+      setOutput(data.reply);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Ошибка сети. Попробуй ещё раз."
+      );
     } finally {
       setLoading(false);
     }
@@ -106,7 +116,10 @@ export default function HomePage() {
         <header className="animate-fade-rise glass-panel flex flex-col gap-5 rounded-3xl border border-emerald-800/35 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
           <div className="space-y-2.5">
             <div
-              style={{ backgroundColor: "rgba(14, 60, 45, 0.58)", color: "#a3d9b8" }}
+              style={{
+                backgroundColor: "rgba(14, 60, 45, 0.58)",
+                color: "#a3d9b8",
+              }}
               className="inline-flex items-center gap-2 rounded-full border border-[#a3d9b8]/25 px-3.5 py-1 text-xs font-medium tracking-wider"
             >
               <span
@@ -115,11 +128,20 @@ export default function HomePage() {
               />
               SMART MIND • ПРИВАТНАЯ СТУДИЯ • 1–11 КЛАССЫ
             </div>
-            <h1 style={{ color: "#ede7da" }} className="text-3xl font-bold tracking-tight sm:text-4xl">
+
+            <h1
+              style={{ color: "#ede7da" }}
+              className="text-3xl font-bold tracking-tight sm:text-4xl"
+            >
               Пространство, куда заходят думать
             </h1>
-            <p style={{ color: "#a6a093" }} className="max-w-2xl text-sm leading-relaxed">
-              Никаких готовых шпаргалок и суеты. Спокойный разбор твоих мыслей, аргументов и текстов с точными подсказками и живым откликом.
+
+            <p
+              style={{ color: "#a6a093" }}
+              className="max-w-2xl text-sm leading-relaxed"
+            >
+              Никаких готовых шпаргалок и суеты. Спокойный разбор твоих мыслей,
+              аргументов и текстов с точными подсказками и живым откликом.
             </p>
           </div>
 
@@ -134,6 +156,7 @@ export default function HomePage() {
             >
               Уровень
             </label>
+
             <select
               id="grade"
               value={grade}
@@ -156,6 +179,7 @@ export default function HomePage() {
         >
           {MODES.map((item) => {
             const selected = item.id === mode;
+
             const cardClass = selected
               ? "glass-card-active -translate-y-0.5 border-[#a3d9b8]/55 rounded-2xl border p-4 text-left transition-all duration-300"
               : "glass-panel border-emerald-900/40 hover:-translate-y-0.5 hover:border-[#a3d9b8]/30 rounded-2xl border p-4 text-left transition-all duration-300";
@@ -172,9 +196,13 @@ export default function HomePage() {
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span style={{ color: "#a6a093" }} className="font-mono text-[11px]">
+                    <span
+                      style={{ color: "#a6a093" }}
+                      className="font-mono text-[11px]"
+                    >
                       {item.code}
                     </span>
+
                     <span
                       style={{ color: selected ? "#a3d9b8" : "#ede7da" }}
                       className="text-xs font-bold tracking-wider"
@@ -182,6 +210,7 @@ export default function HomePage() {
                       {item.title}
                     </span>
                   </div>
+
                   <span
                     style={{ color: selected ? "#a3d9b8" : "#a6a093" }}
                     className="text-[10px] uppercase tracking-wider"
@@ -189,7 +218,11 @@ export default function HomePage() {
                     {selected ? "Активен" : "Открыть"}
                   </span>
                 </div>
-                <p style={{ color: "#a6a093" }} className="mt-2 text-xs leading-relaxed">
+
+                <p
+                  style={{ color: "#a6a093" }}
+                  className="mt-2 text-xs leading-relaxed"
+                >
                   {item.subtitle}
                 </p>
               </button>
@@ -210,6 +243,7 @@ export default function HomePage() {
               >
                 {activeMode.title} • Твой материал
               </label>
+
               <button
                 type="button"
                 onClick={() => {
@@ -229,11 +263,17 @@ export default function HomePage() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Напиши черновик текста, аргумент или утверждение..."
-              style={{ backgroundColor: "rgba(9, 13, 11, 0.82)", color: "#ede7da" }}
+              style={{
+                backgroundColor: "rgba(9, 13, 11, 0.82)",
+                color: "#ede7da",
+              }}
               className="w-full rounded-2xl border border-emerald-900/50 p-4 text-sm leading-relaxed focus:border-[#a3d9b8]/65 focus:outline-none"
             />
 
-            <div style={{ color: "#a6a093" }} className="flex items-center justify-between text-xs">
+            <div
+              style={{ color: "#a6a093" }}
+              className="flex items-center justify-between text-xs"
+            >
               <span>{grade} класс</span>
               <span>{input.length} символов</span>
             </div>
@@ -249,13 +289,15 @@ export default function HomePage() {
                 type="submit"
                 disabled={loading}
                 style={{
-                  background: "linear-gradient(90deg, #1d7558 0%, #0e3c2d 100%)",
+                  background:
+                    "linear-gradient(90deg, #1d7558 0%, #0e3c2d 100%)",
                   color: "#ede7da",
                 }}
                 className="flex-1 rounded-2xl px-5 py-3.5 text-sm font-semibold transition-all duration-300 hover:brightness-110 disabled:opacity-50"
               >
                 {loading ? "Наставник вникает..." : "Разобрать мысль"}
               </button>
+
               {input && (
                 <button
                   type="button"
@@ -264,7 +306,10 @@ export default function HomePage() {
                     setOutput("");
                     setError("");
                   }}
-                  style={{ backgroundColor: "rgba(22, 31, 26, 0.85)", color: "#a6a093" }}
+                  style={{
+                    backgroundColor: "rgba(22, 31, 26, 0.85)",
+                    color: "#a6a093",
+                  }}
                   className="rounded-2xl border border-emerald-800/45 px-4 py-3.5 text-xs font-medium hover:text-[#ede7da]"
                 >
                   Очистить
@@ -277,15 +322,26 @@ export default function HomePage() {
             <div>
               <div className="flex flex-wrap items-center justify-between gap-2 border-b border-emerald-900/50 pb-4">
                 <div>
-                  <span style={{ color: "#a3d9b8" }} className="text-[11px] font-semibold uppercase tracking-widest">
+                  <span
+                    style={{ color: "#a3d9b8" }}
+                    className="text-[11px] font-semibold uppercase tracking-widest"
+                  >
                     Разбор наставника
                   </span>
-                  <h2 style={{ color: "#ede7da" }} className="mt-0.5 text-base font-semibold">
+
+                  <h2
+                    style={{ color: "#ede7da" }}
+                    className="mt-0.5 text-base font-semibold"
+                  >
                     {activeMode.title}
                   </h2>
                 </div>
+
                 <span
-                  style={{ backgroundColor: "rgba(9, 13, 11, 0.78)", color: "#a6a093" }}
+                  style={{
+                    backgroundColor: "rgba(9, 13, 11, 0.78)",
+                    color: "#a6a093",
+                  }}
                   className="rounded-full border border-[#a3d9b8]/20 px-3 py-1 text-xs"
                 >
                   {grade} класс
@@ -307,7 +363,9 @@ export default function HomePage() {
                   <div className="animate-fade-rise">{output}</div>
                 ) : (
                   <p style={{ color: "#a6a093" }}>
-                    Выбери режим, подставь пример или введи свой текст слева. Здесь плавно появится разбор сильных сторон, зон роста и вопрос, который поможет продвинуть мысль дальше.
+                    Выбери режим, подставь пример или введи свой текст слева.
+                    Здесь появится разбор сильных сторон, зон роста и вопрос,
+                    который поможет продвинуть мысль дальше.
                   </p>
                 )}
               </div>
