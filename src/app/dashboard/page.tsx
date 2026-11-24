@@ -2,9 +2,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "../../lib/supabase";
 
 type Profile = {
   full_name: string | null;
@@ -20,6 +21,7 @@ type Progress = {
 export default function DashboardPage() {
   const router = useRouter();
 
+  const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [progress, setProgress] = useState<Progress[]>([]);
   const [attempts, setAttempts] = useState(0);
@@ -27,31 +29,30 @@ export default function DashboardPage() {
 
   useEffect(() => {
     async function loadDashboard() {
-      const { data: authData, error: authError } =
-        await supabase.auth.getUser();
+      const { data, error } = await supabase.auth.getUser();
 
-      if (authError || !authData.user) {
+      if (error || !data.user) {
         router.replace("/login");
         return;
       }
 
-      const user = authData.user;
+      setUser(data.user);
 
       const { data: profileData } = await supabase
         .from("profiles")
         .select("full_name, grade")
-        .eq("id", user.id)
+        .eq("id", data.user.id)
         .maybeSingle();
 
       const { data: progressData } = await supabase
         .from("module_progress")
         .select("module_code, completed_lessons, total_lessons")
-        .eq("user_id", user.id);
+        .eq("user_id", data.user.id);
 
       const { count } = await supabase
         .from("daily_attempts")
         .select("*", { count: "exact", head: true })
-        .eq("user_id", user.id);
+        .eq("user_id", data.user.id);
 
       setProfile(profileData);
       setProgress(progressData || []);
@@ -102,13 +103,12 @@ export default function DashboardPage() {
     );
   }
 
+  if (!user) return null;
+
   return (
     <main className="min-h-screen bg-[#172119] text-[#eee9d8] px-5 py-8 md:px-12">
       <header className="max-w-6xl mx-auto flex justify-between items-center border-b border-[#65745f]/40 pb-5">
-        <Link
-          href="/"
-          className="text-lg tracking-[0.25em] text-[#d4d5b5]"
-        >
+        <Link href="/" className="text-lg tracking-[0.25em] text-[#d4d5b5]">
           SMART MIND
         </Link>
 
@@ -130,9 +130,7 @@ export default function DashboardPage() {
         </h1>
 
         <p className="mt-3 text-[#b8c0ad]">
-          {profile?.grade
-            ? `${profile.grade} класс · `
-            : ""}
+          {profile?.grade ? `${profile.grade} класс · ` : ""}
           Твоё пространство для развития мышления.
         </p>
       </section>
@@ -145,16 +143,12 @@ export default function DashboardPage() {
 
         <div className="bg-[#26372b] border border-[#65745f]/40 rounded-2xl p-6">
           <p className="text-sm text-[#c1c9b5]">Пройдено занятий</p>
-          <p className="text-4xl mt-3 font-serif">
-            {completedLessons}
-          </p>
+          <p className="text-4xl mt-3 font-serif">{completedLessons}</p>
         </div>
 
         <div className="bg-[#26372b] border border-[#65745f]/40 rounded-2xl p-6">
           <p className="text-sm text-[#c1c9b5]">Активных модулей</p>
-          <p className="text-4xl mt-3 font-serif">
-            {progress.length}
-          </p>
+          <p className="text-4xl mt-3 font-serif">{progress.length}</p>
         </div>
       </section>
 
@@ -186,8 +180,7 @@ export default function DashboardPage() {
                 </p>
 
                 <p className="text-sm mt-6 text-[#d5d7b6]">
-                  Пройдено: {item?.completed_lessons || 0}
-                  {" / "}
+                  Пройдено: {item?.completed_lessons || 0} /{" "}
                   {item?.total_lessons || 0}
                 </p>
               </Link>
@@ -200,11 +193,13 @@ export default function DashboardPage() {
         <p className="text-xs tracking-[0.2em] text-[#b6c39e]">
           DAILY MIND
         </p>
+
         <h2 className="text-2xl font-serif mt-3">
           Ежедневная тренировка
         </h2>
+
         <p className="text-[#c1c9b5] mt-2">
-          Скоро здесь появится твоя ежедневная подборка заданий.
+          Здесь будут появляться ежедневные задания.
         </p>
       </section>
     </main>
